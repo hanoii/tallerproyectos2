@@ -20,12 +20,6 @@ public class TabClientList extends ListFragment {
         View v = inflater.inflate(R.layout.tab_client_list, container, false);
         ListView lv = (ListView) v.findViewById(android.R.id.list);
 
-        /*String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
-        */
         HashMap<String, String> values = new HashMap<String, String>();
         values.put("Juan Carlos Pascual", "Avenida Paseo Colón 850");
         values.put("Diego Manuel Silvano", "Cerrito 4332");

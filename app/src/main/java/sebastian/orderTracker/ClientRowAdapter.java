@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +28,8 @@ public class ClientRowAdapter extends ArrayAdapter<String> {
         // Busco los Textview en los xml
         TextView nameTextView = (TextView) rowView.findViewById(R.id.client_name);
         TextView addressTextView = (TextView) rowView.findViewById(R.id.client_adress);
+        TextView enterpriseTextView = (TextView) rowView.findViewById(R.id.client_enterprise);
+        ImageView callIcon = (ImageView) rowView.findViewById(R.id.call_icon);
         // Itero sobre el hashmap
         Iterator it = clients.entrySet().iterator();
         HashMap.Entry<String, String> client = null;
@@ -36,6 +39,8 @@ public class ClientRowAdapter extends ArrayAdapter<String> {
         // Agrego el texto a los textView
         nameTextView.setText(client.getKey());
         addressTextView.append(client.getValue());
+        enterpriseTextView.setText("Ford Argentina S.A.");
+        callIcon.setImageResource(R.drawable.example);
         return rowView;
     }
 }
