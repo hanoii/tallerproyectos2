@@ -1,7 +1,9 @@
 package sebastian.orderTracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,24 +32,26 @@ public class TabClientList extends ListFragment {
         }*/
 
         final ClientRowAdapter adapter = new ClientRowAdapter(getContext(),values);
-        lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0)
+                /*view.animate().setDuration(2000).alpha(0)
                         .withEndAction(new Runnable() {
                             @Override
                             public void run() {
 
                             }
                         });
+                        */
+                Log.d("test", "clicked");
+                Intent intent = new Intent(getContext(), ClientDetails.class);
+                startActivity(intent);
             }
-
         });
+        lv.setAdapter(adapter);
+
 
         return v;
     }

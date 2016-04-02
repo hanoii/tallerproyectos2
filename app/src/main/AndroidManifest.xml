@@ -16,6 +16,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ClientDetails"
+            android:label="@string/title_activity_client_details"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sebastian.orderTracker.MainActivity" />
+        </activity>
+        <activity
             android:name=".ProductDetailActivity"
             android:label="@string/title_activity_product_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
