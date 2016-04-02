@@ -4,6 +4,7 @@ package sebastian.orderTracker;
  * Created by Senastian on 01/04/2016.
  */
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 
@@ -27,6 +28,8 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
+        view.getContext().startActivity(intent);
+//        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
     }
 }
