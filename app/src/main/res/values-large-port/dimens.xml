@@ -1,0 +1,5 @@
+<resources>
+    <!-- Una tablet chiquita orientada portrait, por ejemplo el Nexus 7 -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+    <dimen name="product_price_size">80sp</dimen>
+</resources>

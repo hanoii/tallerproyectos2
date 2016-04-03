@@ -1,10 +1,11 @@
 <resources>
-<string name="app_name">Sistema de Trackeo de Pedidos</string>
-<string name="action_settings">something here</string>
-<string name="clients_tab">Clientes</string>
-<string name="products_tab">Productos</string>
-<string name="title_activity_client_details">ClientDetails</string>
-<string name="title_activity_product_detail">Nombre del producto</string>
+    <string name="app_name">Sistema de Trackeo de Pedidos</string>
+    <string name="action_settings">something here</string>
+    <string name="clients_tab">Clientes</string>
+    <string name="products_tab">Productos</string>
+    <string name="title_activity_client_details">ClientDetails</string>
+    <string name="title_activity_product_detail">Nombre del producto</string>
+    <string name="example_price">$1.450</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
