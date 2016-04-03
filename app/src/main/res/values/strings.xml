@@ -16,6 +16,11 @@
     <string name="example_codigo_producto">151155</string>
     <string name="example_descripcion">Cosa de pie modelo PT7000, con 6 velocidades y timer configurable.</string>
     <string name="example_cantidad_disponible">12u</string>
+    <string name="clients_details_adress_toolbar_text">Dirección</string>
+    <string name="clients_details_phone_toolbar_text">Teléfono</string>
+    <string name="clients_details_mobile_phone_text">Teléfono Móvil</string>
+    <string name="clients_details_static_phone_text">Teléfono Fijo</string>
+    <string name="clients_details_mail_toolbar_text">Dirección de Mail</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -105,4 +110,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_client_map">Map</string>
 </resources>

@@ -58,15 +58,6 @@ public class ClientRowAdapter extends ArrayAdapter<String> {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                /*view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                        */
-                Log.d("test", "clicked");
                 Intent intent = new Intent(getContext(), ClientDetails.class);
                 getContext().startActivity(intent);
             }

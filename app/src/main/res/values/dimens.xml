@@ -6,6 +6,7 @@
     <dimen name="product_bar_height">100dp</dimen>
     <dimen name="product_price_size">10sp</dimen>
     <dimen name="product_text_margin">10dp</dimen>
+    <dimen name="client_normal_font_size">10sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>
