@@ -5,8 +5,17 @@
     <string name="products_tab">Productos</string>
     <string name="title_activity_client_details">ClientDetails</string>
     <string name="title_activity_product_detail">Nombre del producto</string>
+    <string name="cod">Cod.</string>
+    <string name="descripcion">Descripción:</string>
+    <string name="cantidad_disponible">Cantidad disponible:</string>
+    <string name="cantidad">Cantidad:</string>
+    <string name="pedido">Pedido</string>
+    <string name="agregar_a_pedido">Agregar a pedido</string>
     <string name="example_product_name">Cosa modelo PT7000</string>
     <string name="example_price">$1.450</string>
+    <string name="example_codigo_producto">151155</string>
+    <string name="example_descripcion">Cosa de pie modelo PT7000, con 6 velocidades y timer configurable.</string>
+    <string name="example_cantidad_disponible">12u</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
