@@ -1,5 +1,7 @@
 <resources>
     <!-- Una tablet chiquita orientada landscape, por ejemplo el Nexus 7 -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
-    <dimen name="product_price_size">90sp</dimen>
+    <dimen name="product_bar_height">400dp</dimen>
+    <dimen name="product_price_size">60sp</dimen>
+    <dimen name="product_name_size">30sp</dimen>
 </resources>

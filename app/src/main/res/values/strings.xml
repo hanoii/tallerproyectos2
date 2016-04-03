@@ -5,6 +5,7 @@
     <string name="products_tab">Productos</string>
     <string name="title_activity_client_details">ClientDetails</string>
     <string name="title_activity_product_detail">Nombre del producto</string>
+    <string name="example_product_name">Cosa modelo PT7000</string>
     <string name="example_price">$1.450</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

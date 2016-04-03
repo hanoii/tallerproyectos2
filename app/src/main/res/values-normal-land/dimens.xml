@@ -1,5 +1,7 @@
 <resources>
     <!-- Un celular orientado landscape, por ejemplo el nexus 5 -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
-    <dimen name="product_price_size">60sp</dimen>
+    <dimen name="product_bar_height">230dp</dimen>
+    <dimen name="product_price_size">40sp</dimen>
+    <dimen name="product_name_size">20sp</dimen>
 </resources>
