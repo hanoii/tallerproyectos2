@@ -3,6 +3,9 @@ package sebastian.orderTracker;
 
 import android.annotation.TargetApi;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -26,31 +29,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import sebastian.orderTracker.sincronizacion.product.ProductSyncTask;
 
-/**
- * Created by Senastian on 30/03/2016.
- */
+
+
 public class TabProductList extends Fragment {
 
     private StaggeredGridLayoutManager gaggeredGridLayoutManager;
+    private Context activity;
+    private ProductSyncTask task;
+    private ArrayList<Product> gaggeredList;
+    private ProductItemAdapter pAdapter;
+    View v;
 
     @TargetApi(23)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_product_list, container, false);
-
-
+        this.v = v;
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.catalog);
         recyclerView.setHasFixedSize(true);
 
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
-
-
-        //ArrayList<Product> gaggeredList = getListItemData();
         ArrayList<Product> gaggeredList = getListItemData();
-
 
         ProductItemAdapter pAdapter = new ProductItemAdapter(getContext(), gaggeredList);
         recyclerView.setAdapter(pAdapter);
@@ -67,6 +70,26 @@ public class TabProductList extends Fragment {
         return listViewItems;
     }
 
+    @Override
+    public void onAttach(Context activity) {
+        super.onAttach(activity);
+        this.activity = activity;
+    }
+
+    public void updateProducts(ArrayList<Product> products) {
+        gaggeredList.clear();
+        for(Product product : products)
+            gaggeredList.add(product);
+        pAdapter.notifyDataSetChanged();
+    }
+
+    public ProductSyncTask getTask() {
+        return task;
+    }
+
+    public void setTask(ProductSyncTask task) {
+        this.task = task;
+    }
     private Response.Listener<JSONArray> createRequestSuccessListener(final ClientRowAdapter clientAdapter) {
         return new Response.Listener<JSONArray>() {
             @Override

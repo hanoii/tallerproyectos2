@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,15 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
         return new ClientFilter();
     }
 
+    public Client getByName(String name) {
+        for(int i=0; i < clients.size();++i) {
+            Client c = (Client)clients.get(i);
+            if(name == c.getName()){
+                return c;
+            }
+        }
+        return null;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -76,7 +87,14 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
+                    TextView nameTV = (TextView)view.findViewById(R.id.client_name);
+                    String name = nameTV.getText().toString();
+                    Client c = filteredClients.get(position);
+                    Gson gs = new Gson();
+                    String clientString = gs.toJson(c);
                     Intent intent = new Intent(getContext(), ClientDetails.class);
+                    //intent.putExtra(getString(R.string.serializedClientKey), clientString);
+                    intent.putExtra(getContext().getString(R.string.serializedClientKey), clientString);
                     getContext().startActivity(intent);
                 }
             });

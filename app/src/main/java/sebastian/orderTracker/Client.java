@@ -3,10 +3,11 @@ package sebastian.orderTracker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Client {
+public class Client{
 
 
     private String name;
@@ -45,6 +46,7 @@ public class Client {
     public String getCompany() {
         return company;
     }
+
 
     public Client(JSONObject jsonClient) {
         try {

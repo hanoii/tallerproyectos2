@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,9 +47,16 @@ public class TabClientList extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                Log.d("test", "clicked");
+                /*TextView nameTV = (TextView)view.findViewById(R.id.client_name);
+                String name = nameTV.getText().toString();
+                Client c = clientAdapter.getByName(name);
+                Gson gs = new Gson();
+                String clientString = gs.toJson(c);
                 Intent intent = new Intent(getContext(), ClientDetails.class);
+                //intent.putExtra(getString(R.string.serializedClientKey), clientString);
+                intent.putExtra("a", clientString);
                 startActivity(intent);
+                */
             }
         });
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);
