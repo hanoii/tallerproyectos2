@@ -24,9 +24,7 @@ public class ProductSyncTask extends AsyncTask<String, Void, ProductResponse> {
 		ProductResponse result = null;
 		try {
 			String response = HttpManager.getInstance(activity).get(URL);
-
 			if (HttpManager.ERROR_CODE.equals(response)) {
-                Log.w("ERROR RESPONSE: ", response);
 				throw new RuntimeException("Ocurrio un error durante la sincronización. No se pudieron obtener los productos");
 			}
 

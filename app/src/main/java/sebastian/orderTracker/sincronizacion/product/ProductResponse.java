@@ -22,7 +22,6 @@ public class ProductResponse {
 	}
 
 	public void parse(String json) {
-        Log.w("PARSE: ", json);
         Gson gson = new Gson();
         Product[] arr = gson.fromJson(json, Product[].class);
         listadoProductos = new ArrayList<Product>(Arrays.asList(arr));

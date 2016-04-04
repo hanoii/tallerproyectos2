@@ -32,6 +32,8 @@ public class TabProductList extends Fragment {
     private StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private Context activity;
     private ProductSyncTask task;
+    private ArrayList<Product> gaggeredList;
+    private ProductItemAdapter pAdapter;
     View v;
 
     @TargetApi(23)
@@ -46,10 +48,8 @@ public class TabProductList extends Fragment {
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
         //ArrayList<Product> gaggeredList = getListItemData();
-        ArrayList<Product> gaggeredList = new ArrayList<>();
-
-
-        ProductItemAdapter pAdapter = new ProductItemAdapter(getContext(), gaggeredList);
+        gaggeredList = getListItemData();
+        pAdapter = new ProductItemAdapter(getContext(), gaggeredList);
         recyclerView.setAdapter(pAdapter);
 
         if (this.getTask() == null || this.getTask().getStatus() != AsyncTask.Status.RUNNING) {
@@ -77,18 +77,10 @@ public class TabProductList extends Fragment {
     }
 
     public void updateProducts(ArrayList<Product> products) {
-        RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.catalog);
-        recyclerView.setHasFixedSize(true);
-
-        gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
-        recyclerView.setLayoutManager(gaggeredGridLayoutManager);
-
-        //ArrayList<Product> gaggeredList = getListItemData();
-        /*ArrayList<Product> gaggeredList = getListItemData();*/
-
-
-        ProductItemAdapter pAdapter = new ProductItemAdapter(getContext(), products);
-        recyclerView.setAdapter(pAdapter);
+        gaggeredList.clear();
+        for(Product product : products)
+            gaggeredList.add(product);
+        pAdapter.notifyDataSetChanged();
     }
 
     public ProductSyncTask getTask() {
