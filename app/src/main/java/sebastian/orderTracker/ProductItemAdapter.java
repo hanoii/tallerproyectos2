@@ -1,6 +1,7 @@
 package sebastian.orderTracker;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +36,12 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
 
     @Override
     public void onBindViewHolder(ProductItemHolder holder, int position) {
-        holder.name.append(products.get(position).getName());
+        holder.setProduct(products.get(position));
+        holder.name.setText(products.get(position).getName());
         //holder.image.setImageResource(products.get(position).getImgId());
-        holder.codigo.append(products.get(position).getId());
-        holder.precio.append(products.get(position).getPrecio());
+        holder.codigo.setText(products.get(position).getId());
+        holder.precio.setText(products.get(position).getPrecio());
+
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
         holder.image.setImageUrl(products.get(position).getImagen(), mImageLoader);
     }

@@ -24,4 +24,5 @@
     <string name="retrieve_clients_url">http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=1</string>
     <string name="title_activity_client_map">Map</string>
     <string name="serializedClientKey">clientString</string>
+    <string name="serializedProductKey">productString</string>
 </resources>

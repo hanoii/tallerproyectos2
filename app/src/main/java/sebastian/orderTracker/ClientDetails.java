@@ -60,12 +60,9 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         mail.append(client.getMailAdress());
 
         final CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
-        ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
-        //ImageView mImageView = new ImageView(this);
-        final ImageView mImageView = new ImageView(this);
-        //mImageLoader.get(c.getImgSrc(), ImageLoader.getImageListener(mImageView,
-        //        R.drawable.def_image, R.drawable.err_image));
 
+        ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
+        final ImageView mImageView = new ImageView(this);
         mImageLoader.get(c.getImgSrc(),new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

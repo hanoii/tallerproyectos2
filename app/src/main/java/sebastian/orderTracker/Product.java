@@ -1,5 +1,7 @@
 package sebastian.orderTracker;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,12 +25,23 @@ public class Product implements Serializable {
     private String imagen;
     private Descripcion descripcion;
 
+
+    public void setDrawableBitmap(Bitmap drawableBitmap) {
+        this.drawableBitmap = drawableBitmap;
+    }
+
+    private Bitmap drawableBitmap;
+
     public class Descripcion {
         private String value;
         private String summary;
         private String format;
         private String safe_value;
         private String safe_summary;
+
+        public String toString() {
+            return value + " " + summary + " " + format;
+        }
     }
 
     public Product(String name, String marca, int codigo, String imgSrc, double precio, int imgId) {

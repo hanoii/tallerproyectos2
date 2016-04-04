@@ -4,6 +4,7 @@ package sebastian.orderTracker;
  * Created by Senastian on 01/04/2016.
  */
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
@@ -16,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +28,13 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
     public TextView codigo;
     public TextView precio;
     public TextView descripcion;
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    private Product product;
+
 
     public ProductItemHolder(View itemView) {
         super(itemView);
@@ -39,10 +48,11 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
-        // Aca mandaria los datos del producto (mejor aun mandaria el producto entero como serializable)
         intent.putExtra("titulo", name.getText());
 
+        Gson gs = new Gson();
+        String productString = gs.toJson(product);
+        intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);
         view.getContext().startActivity(intent);
-//        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -87,13 +87,10 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-                    TextView nameTV = (TextView)view.findViewById(R.id.client_name);
-                    String name = nameTV.getText().toString();
                     Client c = filteredClients.get(position);
                     Gson gs = new Gson();
                     String clientString = gs.toJson(c);
                     Intent intent = new Intent(getContext(), ClientDetails.class);
-                    //intent.putExtra(getString(R.string.serializedClientKey), clientString);
                     intent.putExtra(getContext().getString(R.string.serializedClientKey), clientString);
                     getContext().startActivity(intent);
                 }
