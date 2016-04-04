@@ -69,7 +69,6 @@ public class TabProductList extends Fragment {
 
     private ArrayList<Product> getListItemData(){
         ArrayList<Product> listViewItems = new ArrayList<Product>();
-        listViewItems.add(new Product("Alkane","asdas", 11,"asdas", 12.2, R.drawable.example));
         return listViewItems;
     }
 

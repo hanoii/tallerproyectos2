@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.toolbox.ImageLoader;
+
 import java.util.ArrayList;
 
 /**
@@ -33,10 +35,12 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
 
     @Override
     public void onBindViewHolder(ProductItemHolder holder, int position) {
-        holder.name.setText(products.get(position).getName());
-        holder.image.setImageResource(products.get(position).getImgId());
-        holder.codigo.setText(products.get(position).getId());
-        holder.precio.setText(products.get(position).getPrecio());
+        holder.name.append(products.get(position).getName());
+        //holder.image.setImageResource(products.get(position).getImgId());
+        holder.codigo.append(products.get(position).getId());
+        holder.precio.append(products.get(position).getPrecio());
+        ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
+        holder.image.setImageUrl(products.get(position).getImagen(), mImageLoader);
     }
 
     @Override

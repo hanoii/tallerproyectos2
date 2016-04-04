@@ -14,12 +14,15 @@ import android.support.v7.widget.RecyclerView;
         import android.widget.TextView;
         import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import org.w3c.dom.Text;
 
 public class ProductItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView name;
-    public ImageView image;
+    public NetworkImageView image;
     public TextView codigo;
     public TextView precio;
     public TextView descripcion;
@@ -28,7 +31,7 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
         super(itemView);
         itemView.setOnClickListener(this);
         name = (TextView) itemView.findViewById(R.id.product_name);
-        image = (ImageView) itemView.findViewById(R.id.product_image);
+        image = (NetworkImageView) itemView.findViewById(R.id.product_image);
         codigo = (TextView) itemView.findViewById(R.id.product_code);
         precio = (TextView) itemView.findViewById(R.id.product_price);
     }
@@ -38,6 +41,7 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
         Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
         // Aca mandaria los datos del producto (mejor aun mandaria el producto entero como serializable)
         intent.putExtra("titulo", name.getText());
+
         view.getContext().startActivity(intent);
 //        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
     }
