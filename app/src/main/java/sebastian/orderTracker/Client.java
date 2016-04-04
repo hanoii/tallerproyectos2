@@ -18,9 +18,18 @@ public class Client{
     private String mailAdress;
     private String adress;
 
-    public Client() {
-
+    public double getLat() {
+        return lat;
     }
+
+    public double getLng() {
+        return lng;
+    }
+
+    //TODO convertir en objeto coherente de geolocalizacion
+    private double lat;
+    private double lng;
+
 
     public String getAdress() {
         return adress;
@@ -51,15 +60,14 @@ public class Client{
     public Client(JSONObject jsonClient) {
         try {
             this.name = (String)jsonClient.get("nombre") + " " + (String)jsonClient.get("apellido");
-            //this.company = (String)jsonClient.get();
             this.company = "Farafasdas S.A.";
             this.adress = (String)((JSONObject)jsonClient.get("direccion")).get("address");
             this.mobilePhoneNumber = (String)jsonClient.get("telefono");
-            //this.staticPhoneNumber = (String)jsonClient.get();
             this.staticPhoneNumber = "21321321";
-            //this.mailAdress = (String)jsonClient.get();
             this.mailAdress = "asdsa@asdads.com";
             this.imgSrc = (String)jsonClient.get("imagen");
+            this.lat = ((JSONObject) jsonClient.get("direccion")).getDouble("lat");
+            this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");
         } catch(JSONException e) {
             ArrayList a = null;
             a.add(1);
