@@ -14,16 +14,23 @@ import android.support.v7.widget.RecyclerView;
         import android.widget.TextView;
         import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class ProductItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView name;
     public ImageView image;
+    public TextView codigo;
+    public TextView precio;
+    public TextView descripcion;
 
     public ProductItemHolder(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
         name = (TextView) itemView.findViewById(R.id.product_name);
         image = (ImageView) itemView.findViewById(R.id.product_image);
+        codigo = (TextView) itemView.findViewById(R.id.product_code);
+        precio = (TextView) itemView.findViewById(R.id.product_price);
     }
 
     @Override

@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,10 +53,16 @@ public class TabProductList extends Fragment {
 
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
-
         ArrayList<Product> gaggeredList = getListItemData();
-
         ProductItemAdapter pAdapter = new ProductItemAdapter(getContext(), gaggeredList);
+
+        ////////////////////
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", null, this.createRequestSuccessListener(pAdapter), this.createRequestErrorListener());
+        String w = jsObjRequest.toString();
+
+        NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
+        //////////////////////
+
         recyclerView.setAdapter(pAdapter);
         return v;
     }
@@ -63,10 +70,6 @@ public class TabProductList extends Fragment {
     private ArrayList<Product> getListItemData(){
         ArrayList<Product> listViewItems = new ArrayList<Product>();
         listViewItems.add(new Product("Alkane","asdas", 11,"asdas", 12.2, R.drawable.example));
-        listViewItems.add(new Product("Alsadsadqwee","aqweqwes", 13,"asdas", 11.0, R.drawable.example));
-        listViewItems.add(new Product("321354ne","azcxzcx", 16,"asdas", 11.2,R.drawable.example));
-        listViewItems.add(new Product("321354ne","azcxzcx", 16,"asdas", 11.2,R.drawable.ordertracker));
-        listViewItems.add(new Product("321354ne","azcxzcx", 16,"asdas", 11.2, R.drawable.example));
         return listViewItems;
     }
 
@@ -90,14 +93,16 @@ public class TabProductList extends Fragment {
     public void setTask(ProductSyncTask task) {
         this.task = task;
     }
-    private Response.Listener<JSONArray> createRequestSuccessListener(final ClientRowAdapter clientAdapter) {
+
+    private Response.Listener<JSONArray> createRequestSuccessListener(final ProductItemAdapter productAdapter) {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
                     for(int i=0; i< response.length();++i) {
-                        Client c = new Client((JSONObject)response.get(i));
-                        clientAdapter.add(c);
+                        Gson gsonProduct = new Gson();
+                        Product p = gsonProduct.fromJson(((JSONObject)response.get(i)).toString(), Product.class);
+                        productAdapter.add(p);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

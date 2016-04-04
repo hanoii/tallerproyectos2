@@ -60,7 +60,7 @@ public class Client{
     public Client(JSONObject jsonClient) {
         try {
             this.name = (String)jsonClient.get("nombre") + " " + (String)jsonClient.get("apellido");
-            this.company = "Farafasdas S.A.";
+            this.company = (String)jsonClient.get("compania");
             this.adress = (String)((JSONObject)jsonClient.get("direccion")).get("address");
             this.mobilePhoneNumber = (String)jsonClient.get("telefono");
             this.staticPhoneNumber = "21321321";

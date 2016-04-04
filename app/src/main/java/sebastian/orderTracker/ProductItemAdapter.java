@@ -27,10 +27,16 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
         return rcv;
     }
 
+    public void add(Product p) {
+        products.add(p);
+    }
+
     @Override
     public void onBindViewHolder(ProductItemHolder holder, int position) {
         holder.name.setText(products.get(position).getName());
         holder.image.setImageResource(products.get(position).getImgId());
+        holder.codigo.setText(products.get(position).getId());
+        holder.precio.setText(products.get(position).getPrecio());
     }
 
     @Override
