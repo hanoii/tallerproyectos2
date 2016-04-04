@@ -13,49 +13,38 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 
-/**
- * Created by Senastian on 30/03/2016.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.ArrayList;
+
 
 public class TabClientList extends ListFragment {
+
+    ClientRowAdapter clientAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_client_list, container, false);
         ListView lv = (ListView) v.findViewById(android.R.id.list);
 
-        HashMap<String, String> values = new HashMap<String, String>();
-        values.put("Juan Carlos Pascual", "Avenida Paseo Colón 850");
-        values.put("Diego Manuel Silvano", "Cerrito 4332");
+        final String s = new String();
 
-        Client client = new Client("Juan Carlos Pascual", "Ford Argentina S.A.","Paseo Colon 850", "sarasa", "1563533357", "46887149", "sarasa@gmail.com");
-        Client c2 = new Client("Carlos Alberto Calvo", "Ford Argentina S.A.","Independencia 2313" ,"sarasa", "1563533357", "46887149", "sarasa@gmail.com");
+        clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>());
 
-        ArrayList<Client> alc = new ArrayList<Client>();
-        alc.add(client);
-        alc.add(c2);
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json", null, this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
+        String w = jsObjRequest.toString();
 
-       /* final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }*/
-
-        final ClientRowAdapter clientAdapter = new ClientRowAdapter(getContext(),alc);
+        NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                /*view.animate().setDuration(2000).alpha(0)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                        */
                 Log.d("test", "clicked");
                 Intent intent = new Intent(getContext(), ClientDetails.class);
                 startActivity(intent);
@@ -66,16 +55,12 @@ public class TabClientList extends ListFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("Text [" + s + "]");
                 clientAdapter.getFilter().filter(s.toString());
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -84,5 +69,32 @@ public class TabClientList extends ListFragment {
 
 
         return v;
+    }
+
+    private Response.Listener<JSONArray> createRequestSuccessListener(final ClientRowAdapter clientAdapter) {
+        return new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for(int i=0; i< response.length();++i) {
+                        Client c = new Client((JSONObject)response.get(i));
+                        clientAdapter.add(c);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    private Response.ErrorListener createRequestErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+
+            ;
+        };
     }
 }
