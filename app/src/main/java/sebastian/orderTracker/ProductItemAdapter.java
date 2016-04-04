@@ -39,7 +39,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
         holder.setProduct(products.get(position));
         holder.name.setText(products.get(position).getName());
         //holder.image.setImageResource(products.get(position).getImgId());
-        holder.codigo.setText(products.get(position).getId());
+        holder.codigo.setText("codigo: " + products.get(position).getId());
         holder.precio.setText(products.get(position).getPrecio());
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();

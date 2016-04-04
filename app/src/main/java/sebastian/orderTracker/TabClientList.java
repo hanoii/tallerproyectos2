@@ -43,20 +43,12 @@ public class TabClientList extends ListFragment {
 
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
 
+
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                /*TextView nameTV = (TextView)view.findViewById(R.id.client_name);
-                String name = nameTV.getText().toString();
-                Client c = clientAdapter.getByName(name);
-                Gson gs = new Gson();
-                String clientString = gs.toJson(c);
-                Intent intent = new Intent(getContext(), ClientDetails.class);
-                //intent.putExtra(getString(R.string.serializedClientKey), clientString);
-                intent.putExtra("a", clientString);
-                startActivity(intent);
-                */
             }
         });
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);

@@ -16,10 +16,10 @@
     <string name="example_codigo_producto">151155</string>
     <string name="example_descripcion">Cosa de pie modelo PT7000, con 6 velocidades y timer configurable.</string>
     <string name="example_cantidad_disponible">12u</string>
-    <string name="clients_details_adress_toolbar_text">Dirección</string>
-    <string name="clients_details_phone_toolbar_text">Teléfono</string>
-    <string name="clients_details_mobile_phone_text">Teléfono Móvil</string>
-    <string name="clients_details_static_phone_text">Teléfono Fijo</string>
+    <string name="clients_details_adress_toolbar_text">Dirección: </string>
+    <string name="clients_details_phone_toolbar_text">Teléfono: </string>
+    <string name="clients_details_mobile_phone_text">Teléfono Móvil: </string>
+    <string name="clients_details_static_phone_text">Teléfono Fijo: </string>
     <string name="clients_details_mail_toolbar_text">Dirección de Mail</string>
     <string name="retrieve_clients_url">http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=1</string>
     <string name="title_activity_client_map">Map</string>

@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Array;
@@ -69,7 +71,7 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
         TextView nameTextView = (TextView) rowView.findViewById(R.id.client_name);
         TextView addressTextView = (TextView) rowView.findViewById(R.id.client_adress);
         TextView enterpriseTextView = (TextView) rowView.findViewById(R.id.client_enterprise);
-        ImageView callIcon = (ImageView) rowView.findViewById(R.id.call_icon);
+      //  ImageView callIcon = (ImageView) rowView.findViewById(R.id.call_icon);
         // Itero sobre el hashmap
         Iterator it = filteredClients.iterator();
         if(it.hasNext()) {
@@ -79,10 +81,16 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
             }
             // Agrego el texto a los textView
             nameTextView.setText(client.getName());
-            addressTextView.append(client.getAdress());
+            //TODO arreglar este adressText despues
+            int posit = client.getAdress().indexOf(",");
+            addressTextView.append(client.getAdress().substring(0,posit-1));
             enterpriseTextView.setText(client.getCompany());
-            callIcon.setImageResource(R.drawable.example);
-
+         //   callIcon.setImageResource(R.drawable.example);
+/////////////////7
+            ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
+            NetworkImageView image = (NetworkImageView)rowView.findViewById(R.id.call_icon);
+            image.setImageUrl(client.getImgSrc(), mImageLoader);
+/////////////////////////////////////////
             ((ListView) parent).setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,

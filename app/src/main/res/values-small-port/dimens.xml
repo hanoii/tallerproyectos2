@@ -6,5 +6,5 @@
     <dimen name="product_bar_height">180dp</dimen>
     <dimen name="product_price_size">10sp</dimen>
     <dimen name="product_name_size">8sp</dimen>
-    <dimen name="client_normal_font_size">5sp</dimen>
+    <dimen name="client_normal_font_size">15sp</dimen>
 </resources>
