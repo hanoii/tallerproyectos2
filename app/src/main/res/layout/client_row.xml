@@ -21,6 +21,7 @@
         style="@android:style/TextAppearance.Material"
         android:focusableInTouchMode="false"
         android:focusable="false"
+        android:textStyle="bold"
         android:text="Dirección:"/>
     <TextView
         android:id="@+id/client_adress"

@@ -4,8 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/tab_client_list_client_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <requestFocus />
+    </EditText>
+
     <ListView
         android:id="@android:id/list"
+        android:layout_below="@id/tab_client_list_client_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
