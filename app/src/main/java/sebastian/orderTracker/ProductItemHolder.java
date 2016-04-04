@@ -29,6 +29,8 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
+        // Aca mandaria los datos del producto (mejor aun mandaria el producto entero como serializable)
+        intent.putExtra("titulo", name.getText());
         view.getContext().startActivity(intent);
 //        Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
     }

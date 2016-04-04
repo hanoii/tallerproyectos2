@@ -13,13 +13,14 @@ import sebastian.orderTracker.sincronizacion.HttpManager;
 import sebastian.orderTracker.sincronizacion.product.ProductSyncTask;
 
 public class ProductDetailActivity extends AppCompatActivity {
-    private ProductSyncTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ((TextView)findViewById(R.id.txt_nombre_producto)).setText(getIntent().getExtras().getString("titulo"));
 
         final ProductDetailActivity activity = this;
 
@@ -29,11 +30,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        if (activity.getTask() == null || activity.getTask().getStatus() != AsyncTask.Status.RUNNING) {
-                            activity.setTask(new ProductSyncTask(activity));
-                            activity.getTask().execute();
-                        }
-                        Snackbar.make(view, "Action done", Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Producto comprado", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } catch (Exception e) {
                         Snackbar.make(view, "Error", Snackbar.LENGTH_LONG)
@@ -41,14 +38,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
                 }
             });
-    }
-
-    public ProductSyncTask getTask() {
-        return task;
-    }
-
-    public void setTask(ProductSyncTask task) {
-        this.task = task;
     }
 
     public void setDetailText(String text) {
