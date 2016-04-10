@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/client_details_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -49,7 +50,16 @@
             android:textColor="@color/primary_material_dark"
             android:layout_margin="@dimen/text_margin"/>
 
-        <include layout="@layout/activity_client_map" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300sp">
+            <include layout="@layout/activity_client_map" />
+            <ImageView
+                android:id="@+id/transparent_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/transparent" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,7 +73,7 @@
             android:alpha="0.75"
             android:textSize="20sp"
             android:id="@+id/toolbar_title" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/client_details_mobile_phone_layout"
@@ -72,14 +82,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/client_normal_font_size"
-                android:layout_margin="10sp"
                 android:textColor="@color/primary_material_dark"
                 android:text="@string/clients_details_mobile_phone_text"
                 android:id="@+id/client_details_mobile_phone_number"
                 />
-        </LinearLayout>
+            <ImageView
+                android:layout_width="70sp"
+                android:layout_height="50sp"
+                android:src="@drawable/call_icon"
+                android:layout_alignParentRight="true"
+                android:contentDescription="icono llamada"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:adjustViewBounds="true"/>
 
-        <LinearLayout
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/client_details_static_phone_layout"
@@ -88,12 +107,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/client_normal_font_size"
-                android:layout_margin="10sp"
                 android:text="@string/clients_details_static_phone_text"
                 android:textColor="@color/primary_material_dark"
+                android:gravity="center_vertical"
                 android:id="@+id/client_details_static_phone_number"
                 />
-        </LinearLayout>
+            <ImageView
+                android:layout_width="70sp"
+                android:layout_height="50sp"
+                android:src="@drawable/call_icon"
+                android:layout_alignParentRight="true"
+                android:contentDescription="icono llamada"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:textAlignment="center"
+                android:adjustViewBounds="true"/>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -106,20 +135,31 @@
             android:gravity="center"
             android:textStyle="bold"
             android:alpha="0.75" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:id="@+id/clients_details_mail_layout"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/client_normal_font_size"
                 android:textColor="@color/primary_material_dark"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textAlignment="center"
                 android:id="@+id/client_details_mail"
                 />
-        </LinearLayout>
+            <ImageView
+                android:layout_width="70sp"
+                android:layout_height="50sp"
+                android:src="@drawable/mail_icon"
+                android:layout_alignParentRight="true"
+                android:contentDescription="icono mail"
+                android:background="@android:color/transparent"
+                android:adjustViewBounds="true"/>
+        </RelativeLayout>
 
 
     </LinearLayout>

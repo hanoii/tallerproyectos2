@@ -64,8 +64,8 @@ public class Client{
             this.adress = (String)((JSONObject)jsonClient.get("direccion")).get("address");
             this.mobilePhoneNumber = (String)jsonClient.get("telefono");
             this.staticPhoneNumber = "47518974";
-            this.mailAdress = (String)jsonClient.get("correo");
-            //this.mailAdress = "asdsasad";
+            //this.mailAdress = (String)jsonClient.get("correo");
+            this.mailAdress = "asdsasad";
             this.imgSrc = (String)jsonClient.get("imagen");
             this.lat = ((JSONObject) jsonClient.get("direccion")).getDouble("lat");
             this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");

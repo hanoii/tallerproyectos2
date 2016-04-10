@@ -7,7 +7,7 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:id="@+id/client_map_layout"
     android:layout_width="match_parent"
-    android:layout_height="300sp"
+    android:layout_height="match_parent"
     map:cameraBearing="112.5"
     map:cameraTargetLat="-33.796923"
     map:cameraTargetLng="150.922433"

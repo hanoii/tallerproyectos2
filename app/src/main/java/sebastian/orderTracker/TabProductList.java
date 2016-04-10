@@ -100,11 +100,13 @@ public class TabProductList extends Fragment {
                 try {
                     for(int i=0; i< response.length();++i) {
                         Gson gsonProduct = new Gson();
-                        Product p = gsonProduct.fromJson(((JSONObject)response.get(i)).toString(), Product.class);
+                        Product p;
+                        p = gsonProduct.fromJson(((JSONObject) response.get(i)).toString(), Product.class);
                         productAdapter.add(p);
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    return;
                 }
             }
         };

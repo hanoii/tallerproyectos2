@@ -2,11 +2,14 @@ package sebastian.orderTracker;
 
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -63,10 +66,10 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
         final ImageView mImageView = new ImageView(this);
-        mImageLoader.get(c.getImgSrc(),new ImageLoader.ImageListener() {
+        mImageLoader.get(c.getImgSrc(), new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    mImageView.setImageResource(R.drawable.err_image);
+                mImageView.setImageResource(R.drawable.err_image);
             }
 
             @Override
@@ -78,7 +81,35 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-        //toolbarLayout.setBackground(mImageView.getDrawable());
+        ImageView transparentImageView = (ImageView)findViewById(R.id.transparent_imageview);
+        final NestedScrollView mainScrollView = (NestedScrollView)findViewById(R.id.client_details_layout);
+
+        transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        mainScrollView.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        mainScrollView.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
     }
 
 
