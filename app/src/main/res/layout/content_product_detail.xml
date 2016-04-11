@@ -15,7 +15,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/example_product_name"
             android:textSize="@dimen/product_name_size"
             android:textColor="@color/primary_material_dark"
             android:id="@+id/txt_nombre_producto"

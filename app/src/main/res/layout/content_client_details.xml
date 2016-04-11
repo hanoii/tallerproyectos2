@@ -14,20 +14,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
+            style="@style/TextTheme"
             android:id="@+id/client_details_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textSize="@dimen/client_normal_font_size"
-            android:textColor="@color/primary_material_dark"
             android:text="Nombre: " />
         <TextView
+            style="@style/TextTheme"
             android:id="@+id/client_details_company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textSize="@dimen/client_normal_font_size"
-            android:textColor="@color/primary_material_dark"
             android:text="Compañia: " />
 
         <TextView
