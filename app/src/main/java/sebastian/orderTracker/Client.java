@@ -1,22 +1,18 @@
 package sebastian.orderTracker;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 
 public class Client{
 
 
-    private String name;
-    private String company;
-    private String imgSrc;
+    private String nombre;
+    private String compania;
+    private String imagen;
     private String mobilePhoneNumber;
-    private String staticPhoneNumber;
-    private String mailAdress;
-    private String adress;
+    private String telefono;
+    private String correo;
+    private String direccion;
 
     public double getLat() {
         return lat;
@@ -31,61 +27,61 @@ public class Client{
     private double lng;
 
 
-    public String getAdress() {
-        return adress;
+    public String getDireccion() {
+        return direccion;
     }
 
 
-    public String getMailAdress() {
-        return mailAdress;
+    public String getCorreo() {
+        return correo;
     }
 
-    public String getStaticPhoneNumber() {
-        return staticPhoneNumber;
+    public String getTelefono() {
+        return telefono;
     }
 
     public String getMobilePhoneNumber() {
         return mobilePhoneNumber;
     }
 
-    public String getImgSrc() {
-        return imgSrc;
+    public String getImagen() {
+        return imagen;
     }
 
-    public String getCompany() {
-        return company;
+    public String getCompania() {
+        return compania;
     }
 
 
     public Client(JSONObject jsonClient) {
         try {
-            this.name = (String)jsonClient.get("nombre") + " " + (String)jsonClient.get("apellido");
-            this.company = (String)jsonClient.get("compania");
-            this.adress = (String)((JSONObject)jsonClient.get("direccion")).get("address");
+            this.nombre = (String)jsonClient.get("nombre") + " " + (String)jsonClient.get("apellido");
+            this.compania = (String)jsonClient.get("compania");
+            this.direccion = (String)((JSONObject)jsonClient.get("direccion")).get("address");
             this.mobilePhoneNumber = (String)jsonClient.get("telefono");
-            this.staticPhoneNumber = "47518974";
-            //this.mailAdress = (String)jsonClient.get("correo");
-            this.mailAdress = "asdsasad";
-            this.imgSrc = (String)jsonClient.get("imagen");
+            this.telefono = "47518974";
+            this.correo = (String)jsonClient.get("correo");
+            //this.correo = "asdsasad";
+            this.imagen = (String)jsonClient.get("imagen");
             this.lat = ((JSONObject) jsonClient.get("direccion")).getDouble("lat");
             this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");
         } catch(Exception e) {
-            this.mailAdress = "malber@gmail.com";
+            this.correo = "malber@gmail.com";
         }
     }
 
     public Client(String n, String c, String add, String i, String mpn, String spn, String mA) {
-        this.name = n;
-        this.company = c;
-        this.imgSrc = i;
+        this.nombre = n;
+        this.compania = c;
+        this.imagen = i;
         this.mobilePhoneNumber = mpn;
-        this.staticPhoneNumber = spn;
-        this.mailAdress = mA;
-        this.adress = add;
+        this.telefono = spn;
+        this.correo = mA;
+        this.direccion = add;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
 

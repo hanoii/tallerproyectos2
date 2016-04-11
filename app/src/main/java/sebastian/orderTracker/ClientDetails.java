@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -17,14 +15,12 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
 //TODO hacer que no scrolee la activity al scrollear el mapa
 public class ClientDetails extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,9 +32,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.client_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        String clientString = getIntent().getExtras().getString(getString(R.string.serializedClientKey));
-        //String clientString = getIntent().getExtras().getString("a");
+        String clientString = getIntent().getExtras().getString(getString(R.string.serializedClientKey));;
         Gson gson = new Gson();
         Client client = gson.fromJson(clientString, Client.class);
         c = client;
@@ -48,6 +42,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         TextView telefonoMovil = (TextView)findViewById(R.id.client_details_mobile_phone_number);
         TextView telefonoFijo = (TextView)findViewById(R.id.client_details_static_phone_number);
         TextView mail = (TextView)findViewById(R.id.client_details_mail);
+        NetworkImageView portrait = (NetworkImageView)findViewById(R.id.client_details_portrait);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.client_map_layout);
@@ -55,18 +50,21 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
 
         //TODO agregar manejo de excepcion
         //TODO agregar un viewholder para limpar esto
-        nombre.append(client.getName());
-        compania.append(client.getCompany());
-        address.append(client.getAdress());
+        nombre.append(client.getNombre());
+        compania.append(client.getCompania());
+        address.append(client.getDireccion());
         telefonoMovil.append(client.getMobilePhoneNumber());
-        telefonoFijo.append(client.getStaticPhoneNumber());
-        mail.append(client.getMailAdress());
+        telefonoFijo.append(client.getTelefono());
+        mail.append(client.getCorreo());
+        ImageLoader il = NetworkManagerSingleton.getInstance(this).getImageLoader();
+        portrait.setImageUrl(client.getImagen(), il);
+
 
         final CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
         final ImageView mImageView = new ImageView(this);
-        mImageLoader.get(c.getImgSrc(), new ImageLoader.ImageListener() {
+        mImageLoader.get(c.getImagen(), new ImageLoader.ImageListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mImageView.setImageResource(R.drawable.err_image);
@@ -76,7 +74,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 if (response.getBitmap() != null) {
                     mImageView.setImageBitmap(response.getBitmap());
-                    toolbarLayout.setBackground(mImageView.getDrawable());
+                    //toolbarLayout.setBackground(mImageView.getDrawable());
                 }
             }
         });
@@ -120,7 +118,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         map.moveCamera(CameraUpdateFactory.newLatLng(pos));
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(c.getLat(), c.getLng()))
-                .title(c.getName()));
+                .title(c.getNombre()));
     }
 
 

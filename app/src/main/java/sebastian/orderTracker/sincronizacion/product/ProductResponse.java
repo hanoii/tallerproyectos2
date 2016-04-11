@@ -18,16 +18,16 @@ public class ProductResponse {
 
 	public ProductResponse(String json, TabProductList caller) {
         this.caller = caller;
-        this.parse(json);
+  //      this.parse(json);
 	}
-
+/*
 	public void parse(String json) {
         Gson gson = new Gson();
         Product[] arr = gson.fromJson(json, Product[].class);
         listadoProductos = new ArrayList<Product>(Arrays.asList(arr));
         caller.updateProducts(listadoProductos);
 	}
-
+*/
 	public ArrayList<Product> getListadoProductos() {
 		return listadoProductos;
 	}

@@ -1,50 +1,37 @@
 package sebastian.orderTracker;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable{
+public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> implements Filterable{
     private final Context context;
     private ArrayList<Client> clients;
     private ArrayList<Client> filteredClients;
 
     public ClientRowAdapter(Context context, ArrayList<Client> clients) {
-        super(context, -1, clients);
         this.context = context;
         this.clients = clients;
         this.filteredClients = clients;
     }
 
-    @Override
-    public boolean isEnabled(int position)
-    {
-        return true;
+    public ClientRowAdapter(Context context) {
+        this.context = context;
+        this.clients = new ArrayList<Client>();
+        this.filteredClients = new ArrayList<Client>();
     }
 
+
+
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return filteredClients.size();
     }
 
@@ -56,13 +43,13 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
     public Client getByName(String name) {
         for(int i=0; i < clients.size();++i) {
             Client c = (Client)clients.get(i);
-            if(name == c.getName()){
+            if(name == c.getNombre()){
                 return c;
             }
         }
         return null;
     }
-
+/*
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -71,26 +58,20 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
         TextView nameTextView = (TextView) rowView.findViewById(R.id.client_name);
         TextView addressTextView = (TextView) rowView.findViewById(R.id.client_adress);
         TextView enterpriseTextView = (TextView) rowView.findViewById(R.id.client_enterprise);
-      //  ImageView callIcon = (ImageView) rowView.findViewById(R.id.call_icon);
-        // Itero sobre el hashmap
         Iterator it = filteredClients.iterator();
         if(it.hasNext()) {
             Client client = null;
             for (int i = 0; i <= position && it.hasNext(); ++i) {
                 client = (Client) it.next();
             }
-            // Agrego el texto a los textView
-            nameTextView.setText(client.getName());
+            nameTextView.setText(client.getNombre());
             //TODO arreglar este adressText despues
-            int posit = client.getAdress().indexOf(",");
-            addressTextView.append(client.getAdress().substring(0,posit-1));
-            enterpriseTextView.setText(client.getCompany());
-         //   callIcon.setImageResource(R.drawable.example);
-/////////////////7
+            int posit = client.getDireccion().indexOf(",");
+            addressTextView.append(client.getDireccion().substring(0,posit-1));
+            enterpriseTextView.setText(client.getCompania());
             ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
             NetworkImageView image = (NetworkImageView)rowView.findViewById(R.id.call_icon);
-            image.setImageUrl(client.getImgSrc(), mImageLoader);
-/////////////////////////////////////////
+            image.setImageUrl(client.getImagen(), mImageLoader);
             ((ListView) parent).setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
@@ -98,15 +79,15 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
                     Client c = filteredClients.get(position);
                     Gson gs = new Gson();
                     String clientString = gs.toJson(c);
-                    Intent intent = new Intent(getContext(), ClientDetails.class);
-                    intent.putExtra(getContext().getString(R.string.serializedClientKey), clientString);
-                    getContext().startActivity(intent);
+                    Intent intent = new Intent(context, ClientDetails.class);
+                    intent.putExtra(context.getString(R.string.serializedClientKey), clientString);
+                    context.startActivity(intent);
                 }
             });
         }
         return rowView;
     }
-
+*/
     private class ClientFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -116,7 +97,7 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
             final ArrayList<Client> filteredList = new ArrayList<Client>(count);
             String filterableString;
             for(int i=0; i < count; ++i) {
-                filterableString = clients.get(i).getName().toLowerCase();
+                filterableString = clients.get(i).getNombre().toLowerCase();
                 if(filterableString.contains(filterString)) {
                     filteredList.add(clients.get(i));
                 }
@@ -133,6 +114,31 @@ public class ClientRowAdapter extends ArrayAdapter<Client> implements Filterable
         }
     }
 
+    @Override
+    public void onBindViewHolder(ClientItemHolder holder, int position) {
+        holder.setClient(clients.get(position));
+        holder.name.setText(clients.get(position).getNombre());
+        //holder.image.setImageResource(products.get(position).getImgId());
+        //holder.mailAdress.setText(clients.get(position).getCorreo());
+        //holder.staticPhoneNumber.setText(clients.get(position).getTelefono());
+        //holder.mobilePhoneNumber.setText(clients.get(position).getMobilePhoneNumber());
+        holder.address.setText(clients.get(position).getDireccion());
+        holder.company.setText(clients.get(position).getCompania());
+
+        ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
+        holder.portrait.setImageUrl(clients.get(position).getImagen(), mImageLoader);
+    }
+
+    @Override
+    public ClientItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.client_row, parent, false);
+        ClientItemHolder rcv = new ClientItemHolder(layoutView);
+        return rcv;
+    }
+
+    public void add(Client client) {
+        clients.add(client);
+    }
 }
 
 

@@ -11,9 +11,7 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 
-/**
- * Created by Senastian on 01/04/2016.
- */
+
 public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
     private ArrayList<Product> products;
     private Context context;

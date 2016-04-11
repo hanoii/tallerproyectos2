@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 
 import sebastian.orderTracker.sincronizacion.HttpManager;
@@ -38,6 +39,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
         final ProductDetailActivity activity = this;
+
+        NetworkImageView portrait = (NetworkImageView)findViewById(R.id.product_details_portrait);
+        ImageLoader il = NetworkManagerSingleton.getInstance(this).getImageLoader();
+        portrait.setImageUrl(p.getImagen(), il);
 //////////////////////////////
         final CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.product_detail_toolbar_layout);
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
@@ -52,7 +57,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 if (response.getBitmap() != null) {
                     mImageView.setImageBitmap(response.getBitmap());
-                    toolbarLayout.setBackground(mImageView.getDrawable());
+                  //  toolbarLayout.setBackground(mImageView.getDrawable());
                 }
             }
         });

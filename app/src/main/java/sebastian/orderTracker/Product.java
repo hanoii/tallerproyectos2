@@ -88,7 +88,7 @@ public class Product implements Serializable {
         this.precio = precio;
     }
 
-    public String getName() {
+    public String getNombre() {
         return name;
     }
 
@@ -104,7 +104,7 @@ public class Product implements Serializable {
         return imgId;
     }
 
-    public String getImgSrc() {
+    public String getImagen() {
         return imgSrc;
     }
 

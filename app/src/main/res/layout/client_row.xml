@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/client_row"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants"
     >
     <TextView
         android:id="@+id/client_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@android:style/TextAppearance.Material.Large"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
         />
     <TextView
         android:id="@+id/client_enterprise"
@@ -19,8 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/client_name"
         style="@android:style/TextAppearance.Material"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
         android:textStyle="bold"
         android:text="Dirección:"/>
     <TextView
@@ -29,14 +31,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/client_enterprise"
         style="@android:style/TextAppearance.Material"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
         android:text="Dirección:"/>
     <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/call_icon"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
+        android:id="@+id/client_portrait"
         android:layout_width="90sp"
         android:layout_height="90sp"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>
+
+</android.support.v7.widget.CardView>

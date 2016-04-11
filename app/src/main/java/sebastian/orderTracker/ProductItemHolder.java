@@ -48,8 +48,6 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(view.getContext(), ProductDetailActivity.class);
-        intent.putExtra("titulo", name.getText());
-
         Gson gs = new Gson();
         String productString = gs.toJson(product);
         intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);
