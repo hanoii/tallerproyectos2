@@ -36,14 +36,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.txt_nombre_producto)).setText(p.getName());
         ((TextView)findViewById(R.id.txt_codigo_producto)).setText(p.getId());
         ((TextView)findViewById(R.id.txt_precio_producto)).setText(p.getPrecio());
-
+        ((TextView)findViewById(R.id.txt_descripcion_producto)).setText(p.getDescripcion().toString());
 
         final ProductDetailActivity activity = this;
 
         NetworkImageView portrait = (NetworkImageView)findViewById(R.id.product_details_portrait);
         ImageLoader il = NetworkManagerSingleton.getInstance(this).getImageLoader();
         portrait.setImageUrl(p.getImagen(), il);
-//////////////////////////////
+
         final CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.product_detail_toolbar_layout);
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(this).getImageLoader();
         final ImageView mImageView = new ImageView(this);
