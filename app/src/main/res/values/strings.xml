@@ -25,4 +25,17 @@
     <string name="title_activity_client_map">Map</string>
     <string name="serializedClientKey">clientString</string>
     <string name="serializedProductKey">productString</string>
+    <string name="agenda">Agenda</string>
+    <string name="fuera_de_ruta">Fuera de Ruta</string>
+    <string name="catalogo">Catalogo</string>
+    <string name="configuracion">Configuracion</string>
+    <string-array name="days">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sabado</item>
+        <item>Domingo</item>
+    </string-array>
 </resources>

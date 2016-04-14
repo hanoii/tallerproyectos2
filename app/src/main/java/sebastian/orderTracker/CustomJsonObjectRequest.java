@@ -1,6 +1,9 @@
 package sebastian.orderTracker;
 
+import android.util.Base64;
+
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,5 +69,14 @@ public class CustomJsonObjectRequest extends Request<JSONObject> {
     protected void deliverResponse(JSONObject response) {
         // TODO Auto-generated method stub
         listener.onResponse(response);
+    }
+
+    @Override
+    public Map<String, String> getHeaders() {
+        HashMap<String, String> params = new HashMap<String, String>();
+        String creds = String.format("%s:%s","v1","1");
+        String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+        params.put("Authorization", auth);
+        return params;
     }
 }

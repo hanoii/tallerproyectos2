@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 
 
@@ -25,6 +27,7 @@ public class TabClientList extends Fragment {
 
     private ClientRowAdapter clientAdapter;
     private LinearLayoutManager layoutManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class TabClientList extends Fragment {
             public void onResponse(JSONArray response) {
                 for(int i=0; i< response.length();++i) {
                     try {
-                        Gson gsonClient = new Gson();
+                        //Gson gsonClient = new Gson();
                         Client c = new Client((JSONObject)response.get(i));
                         //c = gsonClient.fromJson(response.get(i).toString(), Client.class);
                         clientAdapter.add(c);
