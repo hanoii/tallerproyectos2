@@ -23,12 +23,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     }
     @Override
     public Fragment getItem(int position) {
-        String[] daysArray = context.getResources().getStringArray(R.array.days);
+        //String[] daysArray = context.getResources().getStringArray(R.array.days);
         Fragment tab;
         if(position >= 0 && position < 7) {
             tab = new TabClientList();
             Bundle b = new Bundle();
-            b.putString("day", daysArray[position]);
+            b.putInt("day", position);
             tab.setArguments(b);
         } else {
            tab = new TabProductList();

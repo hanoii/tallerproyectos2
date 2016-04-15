@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +22,41 @@ import org.json.JSONObject;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class TabClientList extends Fragment {
 
     private ClientRowAdapter clientAdapter;
     private LinearLayoutManager layoutManager;
+    View v;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        v = createView(savedInstanceState);
+        //retains fragment instance across Activity re-creation
+        setRetainInstance(true);
+    }
+
+    private View createView(Bundle savedInstanceState) {
+        return getActivity().getLayoutInflater().inflate(R.layout.tab_client_list, null, false);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.tab_client_list, container, false);
+        v = inflater.inflate(R.layout.tab_client_list, container, false);
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.client_list);
         rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);
         clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>());
-        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json", null, this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
+
+        int day = toCalendarConvention(getArguments().getInt("day"));
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), null, this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
         String w = jsObjRequest.toString();
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);
@@ -89,4 +108,28 @@ public class TabClientList extends Fragment {
             ;
         };
     }
+
+    // Para Calendar el domingo es 1, Lunes 2, etc
+    private int toCalendarConvention(int day) {
+        if(day == 6)
+            return 1;
+        else
+            return day + 2;
+    }
+
+    private String getFormattedUrl(int day) {
+        String url = "http://dev-taller2.pantheonsite.io/api/clientes.json";
+        Calendar currentTime = Calendar.getInstance();
+        int dif = day - currentTime.get(Calendar.DAY_OF_WEEK);
+        currentTime.add(Calendar.DAY_OF_YEAR, dif);
+        String month = "" + (currentTime.get(Calendar.MONTH)+1); // porque para java empieza de 0
+        if(month.length() < 2) {
+            month = "0" + month;
+        }
+        String date = (currentTime.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + currentTime.get(Calendar.YEAR));
+        Log.d("Date=",date);
+        url = url.concat("?" + "fecha" + "[value][date]=" + date);
+        return url;
+    }
+
 }

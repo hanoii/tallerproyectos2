@@ -116,14 +116,14 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
 
     @Override
     public void onBindViewHolder(ClientItemHolder holder, int position) {
-        holder.setClient(clients.get(position));
-        holder.name.setText(clients.get(position).getNombre());
+        holder.setClient(filteredClients.get(position));
+        holder.name.setText(filteredClients.get(position).getNombre());
         //holder.image.setImageResource(products.get(position).getImgId());
         //holder.mailAdress.setText(clients.get(position).getCorreo());
         //holder.staticPhoneNumber.setText(clients.get(position).getTelefono());
         //holder.mobilePhoneNumber.setText(clients.get(position).getMobilePhoneNumber());
-        holder.address.setText(clients.get(position).getDireccion());
-        holder.company.setText(clients.get(position).getCompania());
+        holder.address.setText(filteredClients.get(position).getDireccion());
+        holder.company.setText(filteredClients.get(position).getCompania());
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
         holder.portrait.setImageUrl(clients.get(position).getImagen(), mImageLoader);
