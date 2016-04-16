@@ -55,9 +55,11 @@ public class TabClientList extends Fragment {
         rv.setLayoutManager(layoutManager);
         clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>());
 
+
+        final Global global = (Global)getActivity().getApplicationContext();
+
         int day = toCalendarConvention(getArguments().getInt("day"));
-        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), null, this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
-        String w = jsObjRequest.toString();
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), global.getUserPass(), this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);
         edt.addTextChangedListener(new TextWatcher() {
@@ -85,9 +87,7 @@ public class TabClientList extends Fragment {
             public void onResponse(JSONArray response) {
                 for(int i=0; i< response.length();++i) {
                     try {
-                        //Gson gsonClient = new Gson();
                         Client c = new Client((JSONObject)response.get(i));
-                        //c = gsonClient.fromJson(response.get(i).toString(), Client.class);
                         clientAdapter.add(c);
                     } catch (JSONException e) {
                         e.printStackTrace();

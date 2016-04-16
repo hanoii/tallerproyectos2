@@ -50,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //////
+        // Esto es el menú lateral
         mDrawerList = (ListView)findViewById(R.id.navList);
         addDrawerItems();
-        ////////
+
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

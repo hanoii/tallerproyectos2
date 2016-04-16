@@ -64,8 +64,7 @@ public class CustomJsonArrayRequest extends Request<JSONArray> {
 
     @Override
     public Map<String, String> getHeaders() {
-        HashMap<String, String> params = new HashMap<String, String>();
-        String creds = String.format("%s:%s","v1","1");
+        String creds = String.format("%s:%s",params.get("user"),params.get("pass"));
         String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
         params.put("Authorization", auth);
         return params;

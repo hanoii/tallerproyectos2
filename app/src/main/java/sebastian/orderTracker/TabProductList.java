@@ -29,6 +29,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sebastian.orderTracker.sincronizacion.product.ProductSyncTask;
 
@@ -47,7 +48,10 @@ public class TabProductList extends Fragment {
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
         pAdapter = new ProductItemAdapter(getContext(), new ArrayList<Product>());
-        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", null, this.createRequestSuccessListener(pAdapter), this.createRequestErrorListener());
+
+        final Global global = (Global)getActivity().getApplicationContext();
+
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", global.getUserPass(), this.createRequestSuccessListener(pAdapter), this.createRequestErrorListener());
         String w = jsObjRequest.toString();
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         recyclerView.setAdapter(pAdapter);
