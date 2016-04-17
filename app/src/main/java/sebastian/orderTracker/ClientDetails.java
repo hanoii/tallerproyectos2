@@ -1,5 +1,6 @@
 package sebastian.orderTracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -106,6 +107,17 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                     default:
                         return true;
                 }
+            }
+        });
+
+        findViewById(R.id.fab_order).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), OrderActivity.class);
+                Gson gs = new Gson();
+                String productString = gs.toJson(c);
+                intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);
+                view.getContext().startActivity(intent);
             }
         });
     }
