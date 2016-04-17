@@ -27,11 +27,115 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay" >
+            </android.support.v7.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingRight="10dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <SearchView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/searchView"
+                        android:queryHint="Buscar"
+                        android:layout_weight="1000" />
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Sólo Pedidos  "
+                        android:id="@+id/switch1"
+                        android:checked="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total: $"
+                        android:id="@+id/textView3"
+                        android:textAlignment="viewEnd"
+                        android:textSize="@dimen/abc_text_size_display_1_material"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00"
+                        android:id="@+id/textView5"
+                        android:textAlignment="viewEnd"
+                        android:textSize="@dimen/abc_text_size_display_1_material" />
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_order" />
+<!--
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recomenzar"
+            android:id="@+id/button"
+            android:backgroundTint="@color/pinkAccent" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmar"
+            android:id="@+id/button2"
+            android:backgroundTint="@color/colorAccent" />
+    </LinearLayout> -->
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:id="@+id/recycler_view_container"
+        android:layout_height="fill_parent"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recomenzar"
+            android:id="@+id/button"
+            android:backgroundTint="@color/pinkAccent"
+            android:layout_margin="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmar"
+            android:id="@+id/button2"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_margin="5dp" />
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
