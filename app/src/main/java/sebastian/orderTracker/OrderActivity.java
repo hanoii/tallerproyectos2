@@ -1,5 +1,6 @@
 package sebastian.orderTracker;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,11 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,7 +29,7 @@ import java.util.List;
 
 public class OrderActivity extends AppCompatActivity {
     private ListView lv;
-    private ProductItemAdapter pAdapter;
+    private OrderProductItemAdapter pAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,15 @@ public class OrderActivity extends AppCompatActivity {
 
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
         rv.setAdapter(pAdapter);
+    }
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        View v = super.onCreateView(parent, name, context, attrs);
+        // No estaría funcionando
+        //pAdapter.setListenerCantidad(findViewById(R.id.imgMas), (TextView)findViewById(R.id.txtCantidadOrder), 1);
+        //pAdapter.setListenerCantidad(findViewById(R.id.imgMenos), (TextView)findViewById(R.id.txtCantidadOrder), -1);
+        return v;
     }
 
     private Response.Listener<JSONArray> createRequestSuccessListener(final ProductItemAdapter productAdapter) {

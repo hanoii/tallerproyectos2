@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
     private ArrayList<Product> products;
-    private Context context;
+    protected Context context;
 
     public ProductItemAdapter(Context cont, ArrayList<Product> products) {
         this.products = products;
