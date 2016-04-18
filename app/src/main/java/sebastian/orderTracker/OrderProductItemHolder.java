@@ -23,7 +23,17 @@ public class OrderProductItemHolder extends ProductItemHolder {
 
     public ImageView plusButton;
     public ImageView minusButton;
-
     public TextView cant;
+
+    public int getCantInteger() {
+        return cantInteger;
+    }
+
+    public void setCantInteger(int cantInteger) {
+        this.cantInteger = cantInteger;
+    }
+
+    //TODO Esto debería ir en una nueva clase Order
+    private int cantInteger;
 
 }

@@ -27,10 +27,7 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
         adapter = this;
     }
 
-    @Override
-    public ProductItemHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_product_row, null);
-        final OrderProductItemHolder product = new OrderProductItemHolder(layoutView);
+    private void setMinusButtonOnClickListener(final OrderProductItemHolder product) {
         product.minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,6 +35,9 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
                 product.cant.setText(total.toString());
             }
         });
+    }
+
+    private void setPlusButtonOnClickListener(final OrderProductItemHolder product) {
         product.plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,8 +45,10 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
                 product.cant.setText(total.toString());
             }
         });
-        product.cant.addTextChangedListener(new TextWatcher() {
+    }
 
+    private void setCantEntryOnClickListener(final OrderProductItemHolder product) {
+        product.cant.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -61,11 +63,20 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
                     String id = product.getId();
                     Product productoParaAgregar = adapter.getById(id);
                     adapter.addToOrder(productoParaAgregar);
+                    product.setCantInteger(cant);
                     notifyDataSetChanged();
                 }
             }
         });
+    }
 
+    @Override
+    public ProductItemHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_product_row, null);
+        OrderProductItemHolder product = new OrderProductItemHolder(layoutView);
+        setPlusButtonOnClickListener(product);
+        setMinusButtonOnClickListener(product);
+        setCantEntryOnClickListener(product);
         return product;
     }
 
@@ -75,6 +86,12 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
         OrderProductItemHolder product = (OrderProductItemHolder) holder;
         setClickableAndFocusable(product.minusButton);
         setClickableAndFocusable(product.plusButton);
+        Product p = getById(holder.getId());
+        String holderCantString = product.cant.getText().toString();
+        if( p != null && product.getCantInteger() > 0 && Integer.parseInt(holderCantString) == 0) {
+            String cantString = "" + product.getCantInteger();
+            product.cant.setText(cantString);
+        }
     }
 
 
