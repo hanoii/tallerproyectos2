@@ -118,8 +118,8 @@ public class TabClientList extends Fragment {
         String url = "http://dev-taller2.pantheonsite.io/api/clientes.json";
         Calendar currentTime = Calendar.getInstance();
         int dif = day - currentTime.get(Calendar.DAY_OF_WEEK);
-        if(day == 1) {
-            dif = -dif; // El domingo esta como primer dia para Calendar, pero nosotros lo queremos como ultimo
+        if(day == 1 && currentTime.get(Calendar.DAY_OF_WEEK) != 1) {
+            dif = 7+dif; // El domingo esta como primer dia para Calendar, pero nosotros lo queremos como ultimo
         }
         currentTime.add(Calendar.DAY_OF_YEAR, dif);
         String month = "" + (currentTime.get(Calendar.MONTH)+1); // porque para java empieza de 0

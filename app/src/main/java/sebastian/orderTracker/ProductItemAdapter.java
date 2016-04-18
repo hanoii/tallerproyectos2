@@ -11,16 +11,30 @@ import android.widget.Filter;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
     private ArrayList<Product> products;
-    private ArrayList<Product> filteredProducts;
     protected Context context;
+    private ArrayList<Product> productsInOrder;
+    private ArrayList<Product> productsToShow;
 
     public ProductItemAdapter(Context cont, ArrayList<Product> products) {
         this.products = products;
+        this.productsToShow = this.products;
         this.context = cont;
+        this.productsInOrder = new ArrayList<Product>();
+    }
+
+    public void setShowOnlyOrderProducts() {
+        productsToShow = productsInOrder;
+        notifyDataSetChanged();
+    }
+
+    public void setShowAllProducts() {
+        productsToShow = products;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -34,21 +48,34 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
         products.add(p);
     }
 
+    public void addToOrder(Product product) {
+        productsInOrder.add(product);
+    }
+
     @Override
     public void onBindViewHolder(ProductItemHolder holder, int position) {
-        holder.setProduct(products.get(position));
-        holder.name.setText(products.get(position).getName());
-        //holder.image.setImageResource(products.get(position).getImgId());
-        holder.codigo.setText("codigo: " + products.get(position).getId());
-        holder.precio.setText(products.get(position).getPrecio());
-
+        holder.setProduct(productsToShow.get(position));
+        holder.name.setText(productsToShow.get(position).getName());
+        holder.codigo.setText("codigo: " + productsToShow.get(position).getId());
+        holder.precio.setText(productsToShow.get(position).getPrecio());
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
-        holder.image.setImageUrl(products.get(position).getImagen(), mImageLoader);
+        holder.image.setImageUrl(productsToShow.get(position).getImagen(), mImageLoader);
     }
 
     @Override
     public int getItemCount() {
-        return this.products.size();
+        return this.productsToShow.size();
     }
 
+
+    public Product getById(String id) {
+        Iterator<Product> it = productsToShow.iterator();
+        while(it.hasNext()) {
+            Product p = it.next();
+            if(id.compareTo(p.getId()) == 0) {
+                return p;
+            }
+        }
+        return null;
+    }
 }

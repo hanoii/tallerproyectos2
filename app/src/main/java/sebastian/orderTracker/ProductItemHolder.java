@@ -53,4 +53,22 @@ public class ProductItemHolder extends RecyclerView.ViewHolder implements View.O
         intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);
         view.getContext().startActivity(intent);
     }
+
+    public String getId() {
+        return ProductItemHolder.stripNonDigits(codigo.getText().toString());
+    }
+
+    // TODO mover a utils
+    private static String stripNonDigits(
+            final CharSequence input /* inspired by seh's comment */){
+        final StringBuilder sb = new StringBuilder(
+                input.length() /* also inspired by seh's comment */);
+        for(int i = 0; i < input.length(); i++){
+            final char c = input.charAt(i);
+            if(c > 47 && c < 58){
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
 }

@@ -3,9 +3,13 @@ package sebastian.orderTracker;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -15,8 +19,12 @@ import java.util.ArrayList;
 
 public class OrderProductItemAdapter extends ProductItemAdapter {
 
+
+    final OrderProductItemAdapter adapter;
+
     public OrderProductItemAdapter(Context cont, ArrayList<Product> products) {
         super(cont, products);
+        adapter = this;
     }
 
     @Override
@@ -37,20 +45,45 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
                 product.cant.setText(total.toString());
             }
         });
+        product.cant.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                int cant = Integer.parseInt(s.toString());
+                if(cant > 0) {
+                    String id = product.getId();
+                    Product productoParaAgregar = adapter.getById(id);
+                    adapter.addToOrder(productoParaAgregar);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
         return product;
     }
 
     @Override
     public void onBindViewHolder(ProductItemHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        final OrderProductItemHolder product = (OrderProductItemHolder) holder;
-        product.minusButton.setClickable(true);
-        product.minusButton.setEnabled(true);
-        product.minusButton.setFocusable(true);
-        product.minusButton.setFocusableInTouchMode(true);
-        product.plusButton.setClickable(true);
-        product.plusButton.setEnabled(true);
-        product.plusButton.setFocusable(true);
-        product.plusButton.setFocusableInTouchMode(true);
+        OrderProductItemHolder product = (OrderProductItemHolder) holder;
+        setClickableAndFocusable(product.minusButton);
+        setClickableAndFocusable(product.plusButton);
     }
+
+
+    private void setClickableAndFocusable(View view) {
+        view.setClickable(true);
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.setEnabled(true);
+    }
+
+
 }

@@ -9,12 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -25,7 +29,6 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrderActivity extends AppCompatActivity {
     private ListView lv;
@@ -51,6 +54,17 @@ public class OrderActivity extends AppCompatActivity {
         rv.setLayoutManager(llm);
 
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
+
+        Switch switchOrderCatalog = (Switch)findViewById(R.id.switch1);
+        switchOrderCatalog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    pAdapter.setShowAllProducts();
+                else
+                    pAdapter.setShowOnlyOrderProducts();
+            }
+        });
+
         rv.setAdapter(pAdapter);
     }
 

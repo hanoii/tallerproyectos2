@@ -12,12 +12,6 @@ import java.util.ArrayList;
  * Created by Senastian on 01/04/2016.
  */
 public class Product implements Serializable {
-    /*private String name;
-    private String marca;
-    private Integer codigo;
-    private String imgSrc;
-    private Double precio;
-    private int imgId;*/
 
     private String id;
     private String titulo;

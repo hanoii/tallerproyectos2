@@ -91,7 +91,7 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
         holder.company.setText(filteredClients.get(position).getCompania());
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
-        holder.portrait.setImageUrl(clients.get(position).getImagen(), mImageLoader);
+        holder.portrait.setImageUrl(filteredClients.get(position).getImagen(), mImageLoader);
         setSemaphore(holder, filteredClients.get(position));
     }
 
