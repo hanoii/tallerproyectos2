@@ -10,16 +10,19 @@ import android.widget.Filterable;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> implements Filterable{
     private final Context context;
     private ArrayList<Client> clients;
     private ArrayList<Client> filteredClients;
+    int day;
 
-    public ClientRowAdapter(Context context, ArrayList<Client> clients) {
+    public ClientRowAdapter(Context context, ArrayList<Client> clients, int day) {
         this.context = context;
         this.clients = clients;
         this.filteredClients = clients;
+        this.day = day;
     }
 
     public ClientRowAdapter(Context context) {
@@ -127,6 +130,7 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
         holder.portrait.setImageUrl(clients.get(position).getImagen(), mImageLoader);
+        setSemaphore(holder, filteredClients.get(position));
     }
 
     @Override
@@ -138,6 +142,18 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
 
     public void add(Client client) {
         clients.add(client);
+    }
+
+    public void setSemaphore(ClientItemHolder holder, Client client) {
+        // >0 verde, <0 rojo, =0 amarillo
+        Calendar c = Calendar.getInstance();
+        if(client.hasBeenVisited()) {
+            holder.setSemaphore(1);
+        } else if(c.get(Calendar.DAY_OF_WEEK) > day) {
+            holder.setSemaphore(0);
+        } else {
+            holder.setSemaphore(-1);
+        }
     }
 }
 

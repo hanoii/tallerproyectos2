@@ -53,12 +53,9 @@ public class TabClientList extends Fragment {
         rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);
-        clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>());
-
-
-        final Global global = (Global)getActivity().getApplicationContext();
-
         int day = toCalendarConvention(getArguments().getInt("day"));
+        clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>(), day);
+        final Global global = (Global)getActivity().getApplicationContext();
         CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), global.getUserPass(), this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);

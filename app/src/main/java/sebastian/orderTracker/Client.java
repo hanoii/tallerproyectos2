@@ -13,6 +13,7 @@ public class Client{
     private String telefono;
     private String correo;
     private String direccion;
+    private boolean visited;
 
     public double getLat() {
         return lat;
@@ -52,6 +53,9 @@ public class Client{
         return compania;
     }
 
+    public boolean hasBeenVisited() {
+        return visited;
+    }
 
     public Client(JSONObject jsonClient) {
         try {
@@ -65,6 +69,7 @@ public class Client{
             this.imagen = (String)jsonClient.get("imagen");
             this.lat = ((JSONObject) jsonClient.get("direccion")).getDouble("lat");
             this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");
+            visited = false;
         } catch(Exception e) {
             this.correo = "malber@gmail.com";
         }

@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Pattern;
 
 
 /**
@@ -49,13 +50,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -136,7 +130,16 @@ public class LoginActivity extends AppCompatActivity {
             focusView = mEmailView;
             cancel = true;
         }
-
+        if(!esAlfanumerico(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+        if(!esAlfanumerico(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -150,9 +153,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+    private boolean esAlfanumerico(String str) {
+        Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+        return !(p.matcher(str).find());
     }
 
     /**
@@ -190,6 +193,8 @@ public class LoginActivity extends AppCompatActivity {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -261,62 +266,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-/*
-    public class CustomLoginRequest extends Request<Boolean> {
-
-        private Response.Listener<Boolean> listener;
-        private Map<String, String> params;
-
-        public CustomLoginRequest(String url, Map<String, String> params,
-                                  Response.Listener<Boolean> reponseListener) {
-            super(Method.GET, url,)
-            this.listener = reponseListener;
-            this.params = params;
-
-    }
-
-        private Response.Listener<Boolean> createRequestSuccessListener(final ClientRowAdapter clientAdapter) {
-            return new Response.Listener<Boolean>() {
-                @Override
-                public void onResponse(Boolean response) {
-
-                }
-            };
-        }
-
-        protected Map<String, String> getParams()
-                throws com.android.volley.AuthFailureError {
-            return params;
-        };
-
-        @Override
-        protected Response<Boolean> parseNetworkResponse(NetworkResponse response) {
-            try {
-                String jsonString = new String(response.data,
-                        HttpHeaderParser.parseCharset(response.headers));
-                return Response.success(new Boolean(true),
-                        HttpHeaderParser.parseCacheHeaders(response));
-            } catch (UnsupportedEncodingException e) {
-                return Response.error(new ParseError(e));
-            }
-        }
-
-        @Override
-        protected void deliverResponse(Boolean response) {
-            listener.onResponse(response);
-        }
-
-
-        @Override
-        public Map<String, String> getHeaders() {
-            String creds = String.format("%s:%s",params.get("user"),params.get("pass"));
-            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-            params.put("Authorization", auth);
-            return params;
-        }
-
-    }
-*/
 
 }
 

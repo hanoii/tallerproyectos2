@@ -22,16 +22,45 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
     @Override
     public ProductItemHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_product_row, null);
-        ProductItemHolder rcv = new ProductItemHolder(layoutView);
-        return rcv;
+        final OrderProductItemHolder product = new OrderProductItemHolder(layoutView);
+        product.minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer total = Integer.parseInt(product.cant.getText().toString()) - 1;
+                product.cant.setText(total.toString());
+            }
+        });
+        product.plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Integer total = Integer.parseInt(product.cant.getText().toString()) + 1;
+                product.cant.setText(total.toString());
+            }
+        });
+        return product;
     }
 
-    public void setListenerCantidad(View v, final TextView tv, final int incremento) {
+    @Override
+    public void onBindViewHolder(ProductItemHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        final OrderProductItemHolder product = (OrderProductItemHolder) holder;
+        product.minusButton.setClickable(true);
+        product.minusButton.setEnabled(true);
+        product.minusButton.setFocusable(true);
+        product.minusButton.setFocusableInTouchMode(true);
+        product.plusButton.setClickable(true);
+        product.plusButton.setEnabled(true);
+        product.plusButton.setFocusable(true);
+        product.plusButton.setFocusableInTouchMode(true);
+    }
+
+
+    public void setListenerCantidad(View v, TextView tv, int incremento) {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int cantidad = Integer.getInteger(tv.getText().toString());
-                tv.setText("" + (cantidad + incremento));
+               // Integer total = Integer.getInteger(tv.getText().toString()) + incremento;
+            //    tv.setText(total.toString());
             }
         });
     }
