@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,26 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.RequestFuture;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -45,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Boolean loginResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
@@ -186,20 +209,27 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            boolean success = false;
+            RequestFuture<String> future = RequestFuture.newFuture();
+            final Global global = (Global)getBaseContext().getApplicationContext();
+            Map<String, String> userPass = new HashMap<String, String>();
+            userPass.put("user", mEmail);
+            userPass.put("pass", mPassword);
+            CustomStringRequest request = new CustomStringRequest("http://dev-taller2.pantheonsite.io/api/clientes.json",userPass, future, future);
+            NetworkManagerSingleton.getInstance(getBaseContext().getApplicationContext()).addToRequestQueue(request);
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                String resp = future.get(10, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                // TODO Debe manejar todos los errores correspondientemente
+                if (e.getCause() instanceof VolleyError) {
+                    VolleyError error = (VolleyError)e.getCause();
+                    if(error.networkResponse.statusCode >= 400)
+                        return false;
                 }
+                e.printStackTrace();
             }
+            global.setUsername(mEmail);
+            global.setPassword(mPassword);
 
             // TODO: register the new account here.
             return true;
@@ -213,12 +243,12 @@ public class LoginActivity extends AppCompatActivity {
             if (success) {
                 Intent main = new Intent(getApplicationContext(), MainActivity.class);
                 Global global = (Global)getApplicationContext();
-                global.setUsername("v1");
-                global.setPassword("1");
+                global.setUsername(global.getUsername());
+                global.setPassword(global.getPassword());
                 startActivity(main);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.error_incorrect_login));
                 mPasswordView.requestFocus();
             }
         }
@@ -228,6 +258,65 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+
+
     }
+/*
+    public class CustomLoginRequest extends Request<Boolean> {
+
+        private Response.Listener<Boolean> listener;
+        private Map<String, String> params;
+
+        public CustomLoginRequest(String url, Map<String, String> params,
+                                  Response.Listener<Boolean> reponseListener) {
+            super(Method.GET, url,)
+            this.listener = reponseListener;
+            this.params = params;
+
+    }
+
+        private Response.Listener<Boolean> createRequestSuccessListener(final ClientRowAdapter clientAdapter) {
+            return new Response.Listener<Boolean>() {
+                @Override
+                public void onResponse(Boolean response) {
+
+                }
+            };
+        }
+
+        protected Map<String, String> getParams()
+                throws com.android.volley.AuthFailureError {
+            return params;
+        };
+
+        @Override
+        protected Response<Boolean> parseNetworkResponse(NetworkResponse response) {
+            try {
+                String jsonString = new String(response.data,
+                        HttpHeaderParser.parseCharset(response.headers));
+                return Response.success(new Boolean(true),
+                        HttpHeaderParser.parseCacheHeaders(response));
+            } catch (UnsupportedEncodingException e) {
+                return Response.error(new ParseError(e));
+            }
+        }
+
+        @Override
+        protected void deliverResponse(Boolean response) {
+            listener.onResponse(response);
+        }
+
+
+        @Override
+        public Map<String, String> getHeaders() {
+            String creds = String.format("%s:%s",params.get("user"),params.get("pass"));
+            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+            params.put("Authorization", auth);
+            return params;
+        }
+
+    }
+*/
+
 }
 
