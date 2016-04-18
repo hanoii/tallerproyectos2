@@ -35,12 +35,7 @@ public class OrderActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // RecyclerView rv = (RecyclerView) findViewById(R.id.catalog);
-
         RecyclerView rv = (RecyclerView) findViewById(R.id.listProductOrder);
-
-/*        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(layoutManager); */
 
         ArrayList<Product> your_array_list = new ArrayList<Product>();
         pAdapter = new OrderProductItemAdapter(this, your_array_list );
@@ -54,26 +49,6 @@ public class OrderActivity extends AppCompatActivity {
 
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
         rv.setAdapter(pAdapter);
-
-        //rv.setNestedScrollingEnabled(true);
-
-
-        //lv = (ListView) findViewById(R.id.listProductOrder);
-        // Instanciating an array list (you don't need to do this,
-        // you already have yours).
-        /* List<String> your_array_list = new ArrayList<String>();
-        your_array_list.add("foo");
-        your_array_list.add("bar");
-
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                your_array_list );
-
-        lv.setAdapter(arrayAdapter); */
     }
 
     private Response.Listener<JSONArray> createRequestSuccessListener(final ProductItemAdapter productAdapter) {
