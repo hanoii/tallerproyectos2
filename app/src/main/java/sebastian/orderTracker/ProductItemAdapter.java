@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
     private ArrayList<Product> products;
+    private ArrayList<Product> filteredProducts;
     protected Context context;
 
     public ProductItemAdapter(Context cont, ArrayList<Product> products) {
@@ -48,6 +50,5 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
     public int getItemCount() {
         return this.products.size();
     }
-
 
 }

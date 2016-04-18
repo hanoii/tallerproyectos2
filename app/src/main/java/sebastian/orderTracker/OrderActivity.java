@@ -57,9 +57,6 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         View v = super.onCreateView(parent, name, context, attrs);
-        // No estaría funcionando
-        //pAdapter.setListenerCantidad(findViewById(R.id.imgMas), (TextView)findViewById(R.id.txtCantidadOrder), 1);
-        //pAdapter.setListenerCantidad(findViewById(R.id.imgMenos), (TextView)findViewById(R.id.txtCantidadOrder), -1);
         return v;
     }
 

@@ -53,15 +53,4 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
         product.plusButton.setFocusable(true);
         product.plusButton.setFocusableInTouchMode(true);
     }
-
-
-    public void setListenerCantidad(View v, TextView tv, int incremento) {
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // Integer total = Integer.getInteger(tv.getText().toString()) + incremento;
-            //    tv.setText(total.toString());
-            }
-        });
-    }
 }

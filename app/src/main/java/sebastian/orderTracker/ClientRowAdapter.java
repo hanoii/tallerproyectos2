@@ -52,45 +52,7 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
         }
         return null;
     }
-/*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.client_row, parent, false);
-        TextView nameTextView = (TextView) rowView.findViewById(R.id.client_name);
-        TextView addressTextView = (TextView) rowView.findViewById(R.id.client_adress);
-        TextView enterpriseTextView = (TextView) rowView.findViewById(R.id.client_enterprise);
-        Iterator it = filteredClients.iterator();
-        if(it.hasNext()) {
-            Client client = null;
-            for (int i = 0; i <= position && it.hasNext(); ++i) {
-                client = (Client) it.next();
-            }
-            nameTextView.setText(client.getNombre());
-            //TODO arreglar este adressText despues
-            int posit = client.getDireccion().indexOf(",");
-            addressTextView.append(client.getDireccion().substring(0,posit-1));
-            enterpriseTextView.setText(client.getCompania());
-            ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
-            NetworkImageView image = (NetworkImageView)rowView.findViewById(R.id.call_icon);
-            image.setImageUrl(client.getImagen(), mImageLoader);
-            ((ListView) parent).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    Client c = filteredClients.get(position);
-                    Gson gs = new Gson();
-                    String clientString = gs.toJson(c);
-                    Intent intent = new Intent(context, ClientDetails.class);
-                    intent.putExtra(context.getString(R.string.serializedClientKey), clientString);
-                    context.startActivity(intent);
-                }
-            });
-        }
-        return rowView;
-    }
-*/
+
     private class ClientFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
