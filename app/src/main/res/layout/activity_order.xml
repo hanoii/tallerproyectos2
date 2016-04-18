@@ -1,141 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".OrderActivity">
+        android:orientation="vertical"
+        android:id="@+id/recycler_view_container"
+        android:layout_height="fill_parent"
+        android:nestedScrollingEnabled="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            tools:context=".OrderActivity"
+            android:layout_above="@+id/bottom_bar"
+            android:layout_gravity="top">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
-            </android.support.v7.widget.Toolbar>
+                android:layout_height="@dimen/app_bar_height"
+                android:fitsSystemWindows="true"
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingRight="10dp">
-
-                <LinearLayout
-                    android:orientation="horizontal"
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/toolbar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <SearchView
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/searchView"
-                        android:queryHint="Buscar"
-                        android:layout_weight="1000" />
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:popupTheme="@style/AppTheme.PopupOverlay"
+                        app:layout_scrollFlags="scroll|enterAlways"
+                        >
+                    </android.support.v7.widget.Toolbar>
 
-                    <Switch
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Sólo Pedidos  "
-                        android:id="@+id/switch1"
-                        android:checked="false" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:paddingRight="10dp">
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total: $"
-                        android:id="@+id/textView3"
-                        android:textAlignment="viewEnd"
-                        android:textSize="@dimen/abc_text_size_display_1_material"
-                        android:layout_weight="1" />
+                            <SearchView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/searchView"
+                                android:queryHint="Buscar"
+                                android:layout_weight="1000" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0.00"
-                        android:id="@+id/textView5"
-                        android:textAlignment="viewEnd"
-                        android:textSize="@dimen/abc_text_size_display_1_material" />
-                </LinearLayout>
+                            <Switch
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Sólo Pedidos  "
+                                android:id="@+id/switch1"
+                                android:checked="false" />
+                        </LinearLayout>
 
-            </LinearLayout>
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total: $"
+                                android:id="@+id/textView3"
+                                android:textAlignment="viewEnd"
+                                android:textSize="@dimen/abc_text_size_display_1_material"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00"
+                                android:id="@+id/textView5"
+                                android:textAlignment="viewEnd"
+                                android:textSize="@dimen/abc_text_size_display_1_material" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                </android.support.design.widget.CollapsingToolbarLayout>
+            </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_order" />
-<!--
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recomenzar"
-            android:id="@+id/button"
-            android:backgroundTint="@color/pinkAccent" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmar"
-            android:id="@+id/button2"
-            android:backgroundTint="@color/colorAccent" />
-    </LinearLayout> -->
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:id="@+id/recycler_view_container"
-        android:layout_height="fill_parent"/>
-
-    <LinearLayout
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recomenzar"
-            android:id="@+id/button"
-            android:backgroundTint="@color/pinkAccent"
-            android:layout_margin="5dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmar"
-            android:id="@+id/button2"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_margin="5dp" />
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listProductOrder"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/linearLayout2" />
+
+    <LinearLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorPrimary"
+        android:weightSum="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recomenzar"
+                android:id="@+id/button"
+                android:background="@color/pinkAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.07" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmar"
+                android:id="@+id/button2"
+                android:allowUndo="false"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.15" />
+        </LinearLayout>
+    </RelativeLayout>
