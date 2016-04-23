@@ -84,8 +84,12 @@ public class TabClientList extends Fragment {
             public void onResponse(JSONArray response) {
                 for(int i=0; i< response.length();++i) {
                     try {
-                        Client c = new Client((JSONObject)response.get(i));
-                        clientAdapter.add(c);
+                        JSONObject jObj = (JSONObject)response.get(i);
+                        if (jObj != null)
+                        {
+                            Client c = new Client(jObj);
+                            clientAdapter.add(c);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

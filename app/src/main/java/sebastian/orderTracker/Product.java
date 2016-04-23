@@ -18,6 +18,7 @@ public class Product implements Serializable {
     private String precio;
     private String imagen;
     private Descripcion descripcion;
+    private String categoria;
 
 
     public void setDrawableBitmap(Bitmap drawableBitmap) {
@@ -158,4 +159,8 @@ public class Product implements Serializable {
     public void setDescripcion(Descripcion descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getCategoria() {return this.categoria;}
+
+    public void setCategoria(String categoria) {this.categoria = categoria;}
 }

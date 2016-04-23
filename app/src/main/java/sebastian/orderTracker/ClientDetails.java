@@ -113,7 +113,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         findViewById(R.id.fab_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), OrderActivity.class);
+                Intent intent = new Intent(view.getContext(), NewOrderActivity.class);
                 Gson gs = new Gson();
                 String productString = gs.toJson(c);
                 intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);

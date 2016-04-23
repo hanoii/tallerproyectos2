@@ -9,4 +9,7 @@
     <color name="Red500">#F44336</color>
     <color name="Green500">#4CAF50</color>
     <color name="Yellow500">#FFEB3B</color>
+    <color name="White">#FFFFFF</color>
+    <color name="PriceOrange">#EA4302</color>
+    <color name="PriceGreen">#2EDC74</color>
 </resources>
