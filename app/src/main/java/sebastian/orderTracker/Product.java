@@ -44,6 +44,10 @@ public class Product implements Serializable {
         this.imagen = imgSrc;
         this.precio = ""+precio;
     }
+
+    public boolean equals(Product p) {
+        return id.equals(p.getId());
+    }
     /*
     public Product(JSONObject jsonProduct){
         try {

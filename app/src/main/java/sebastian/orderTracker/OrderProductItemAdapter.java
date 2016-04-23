@@ -21,18 +21,28 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
 
 
     final OrderProductItemAdapter adapter;
+    Order order;
+    boolean userInput;
 
     public OrderProductItemAdapter(Context cont, ArrayList<Product> products) {
         super(cont, products);
         adapter = this;
+        order = new Order();
+        userInput = true;
     }
 
     private void setMinusButtonOnClickListener(final OrderProductItemHolder product) {
         product.minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer total = Integer.parseInt(product.cant.getText().toString()) - 1;
-                product.cant.setText(total.toString());
+                if (order.hasProduct(product.getId())) {
+                    if (order.getProductCant(product.getId()) > 0) {
+                        order.removeProducts(product.getId(), 1);
+                        if(order.getProductCant(product.getId()) == 0)
+                            adapter.removeFromOrder(getById(product.getId()));
+                        notifyDataSetChanged();
+                    }
+                }
             }
         });
     }
@@ -41,8 +51,11 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
         product.plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer total = Integer.parseInt(product.cant.getText().toString()) + 1;
-                product.cant.setText(total.toString());
+                if(!order.hasProduct(product.getId())) {
+                    adapter.addToOrder(getById(product.getId()));
+                }
+                order.addProducts(getById(product.getId()), 1);
+                notifyDataSetChanged();
             }
         });
     }
@@ -58,13 +71,24 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                int cant = Integer.parseInt(s.toString());
-                if(cant > 0) {
+                if(userInput) {
+                    int cant = Integer.parseInt(s.toString());
                     String id = product.getId();
                     Product productoParaAgregar = adapter.getById(id);
-                    adapter.addToOrder(productoParaAgregar);
-                    product.setCantInteger(cant);
-                    notifyDataSetChanged();
+                    if (order.hasProduct(product.getId())) { // si el producto esta en el pedido
+                        if (cant > 0) // si es cantidad positiva le agrego la cantidad
+                            order.setProductCant(id, cant);
+                        else { // sino entonces es 0 y lo saco del pedido
+                            order.removeProduct(id);
+                            adapter.removeFromOrder(productoParaAgregar);
+                        }
+                    } else { // si el producto no esta en el pedido
+                        if (cant > 0) {
+                            order.addProducts(productoParaAgregar, cant); // lo agrego al pedido
+                            adapter.addToOrder(productoParaAgregar); // lo agrego al adapter para que se vea
+                            notifyDataSetChanged();
+                        }
+                    }
                 }
             }
         });
@@ -87,11 +111,14 @@ public class OrderProductItemAdapter extends ProductItemAdapter {
         setClickableAndFocusable(product.minusButton);
         setClickableAndFocusable(product.plusButton);
         Product p = getById(holder.getId());
-        String holderCantString = product.cant.getText().toString();
-        if( p != null && product.getCantInteger() > 0 && Integer.parseInt(holderCantString) == 0) {
-            String cantString = "" + product.getCantInteger();
+        userInput = false;
+        if( p != null && order.getProductCant(p.getId()) > 0) {
+            String cantString = "" + order.getProductCant(product.getId());
             product.cant.setText(cantString);
+        } else {
+            product.cant.setText("0");
         }
+        userInput = true;
     }
 
 

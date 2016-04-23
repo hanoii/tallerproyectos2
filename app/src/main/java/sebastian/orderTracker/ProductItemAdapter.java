@@ -37,6 +37,14 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
         notifyDataSetChanged();
     }
 
+    public int getItemPosition(String prod) {
+        for(int i = 0; i < productsToShow.size(); ++i) {
+            if(productsToShow.get(i).getId().equals(prod))
+                return i;
+        }
+        return -1;
+    }
+
     @Override
     public ProductItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_row, null);
@@ -50,6 +58,10 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
 
     public void addToOrder(Product product) {
         productsInOrder.add(product);
+    }
+
+    public void removeFromOrder(Product product) {
+        productsInOrder.remove(product);
     }
 
     @Override
@@ -78,4 +90,6 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{
         }
         return null;
     }
+
+
 }
