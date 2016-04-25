@@ -201,7 +201,27 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
-        } else
+        }
+        else if (this.nONAA.getCount() > 0)
+        {
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.new_order_discard_title)
+                    .setMessage(R.string.new_order_discard_message)
+                    .setPositiveButton(R.string.new_order_discard_positive_option, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            chosenProductsList.clear();
+                            activity.finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.new_order_discard_negative_option, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+        else
         {
             super.onBackPressed();
         }

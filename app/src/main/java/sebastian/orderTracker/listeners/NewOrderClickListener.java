@@ -97,7 +97,7 @@ public class NewOrderClickListener implements View.OnClickListener
                 this.quantity.setText("" + intQuantity);
             }
         }
-        if (intQuantity == 0)
+        if (intQuantity == 0 && data != null)
         {
             this.context.removeItemNavigation(data.getProduct());
         }
