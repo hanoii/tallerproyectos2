@@ -1,17 +1,20 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.adapters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.entities.Product;
+import sebastian.orderTracker.holders.ProductItemHolder;
+import sebastian.orderTracker.R;
 
 
 public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemHolder>{

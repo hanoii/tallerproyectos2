@@ -5,7 +5,7 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden" />
 
         <meta-data
@@ -33,11 +33,11 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".ClientDetails"
+            android:name=".activities.ClientDetails"
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ProductDetailActivity"
+            android:name=".activities.ProductDetailActivity"
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -47,7 +47,7 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -57,7 +57,7 @@
             android:name=".ClientMap"
             android:label="@string/title_activity_client_map" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,12 +66,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OrderActivity"
+            android:name=".activities.OrderActivity"
             android:label="@string/title_activity_pedido"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".NewOrderActivity"
-            android:parentActivityName=".ClientDetails" />
+            android:name=".activities.NewOrderActivity"
+            android:parentActivityName=".activities.ClientDetails" />
     </application>
 
 </manifest>

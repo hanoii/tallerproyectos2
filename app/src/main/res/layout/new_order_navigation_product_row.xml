@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@color/White">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/new_order_img"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:contentDescription="Foto Producto"
+        android:layout_rowSpan="3" />
+
+    <TextView
+        android:id="@+id/new_order_price"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_columnSpan="12"
+        style="@style/PriceTextTheme"/>
+
+    <TextView
+        android:layout_width="90dp"
+        android:layout_height="35dp"
+        android:id="@+id/new_order_name"
+        android:layout_row="1"
+        android:layout_column="1"
+        android:layout_columnSpan="2" />
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/new_order_plus"
+        android:layout_row="1"
+        android:layout_column="10"
+        android:layout_rowSpan="2"
+        android:src="@drawable/new_order_plus"
+        android:scaleType="centerCrop"
+        android:background="@color/White"
+        android:contentDescription="Boton Mas"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/new_order_minus"
+        android:layout_row="1"
+        android:layout_column="11"
+        android:layout_rowSpan="2"
+        android:src="@drawable/new_order_minus_red"
+        android:scaleType="centerCrop"
+        android:background="@color/White"
+        android:contentDescription="Boton Menos"/>
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/new_order_quantity"
+        android:layout_row="1"
+        android:layout_column="12"
+        android:layout_rowSpan="2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cod"
+        android:id="@+id/new_order_code_label"
+        android:layout_row="2"
+        android:layout_column="1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_order_code"
+        android:layout_row="2"
+        android:layout_column="2" />
+
+</GridLayout>

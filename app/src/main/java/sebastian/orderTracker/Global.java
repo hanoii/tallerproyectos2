@@ -11,7 +11,7 @@ import java.util.Map;
 public class Global extends Application {
 
 
-    Map<String, String> getUserPass() {
+    public Map<String, String> getUserPass() {
         Map<String, String> userPass = new HashMap<String, String>();
         userPass.put("user", username);
         userPass.put("pass", password);

@@ -1,12 +1,10 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.entities;
 
 import android.graphics.Bitmap;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.ArrayList;
+
+import sebastian.orderTracker.R;
 
 /**
  * Created by Senastian on 01/04/2016.
@@ -163,4 +161,12 @@ public class Product implements Serializable {
     public String getCategoria() {return this.categoria;}
 
     public void setCategoria(String categoria) {this.categoria = categoria;}
+
+    @Override
+    public boolean equals(Object p)
+    {
+        if (!(p instanceof Product)) return false;
+        if (p == this) return true;
+        return (((Product) p).getId().compareTo(this.id) == 0);
+    }
 }

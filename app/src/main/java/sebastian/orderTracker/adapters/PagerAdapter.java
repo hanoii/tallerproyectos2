@@ -1,4 +1,4 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+
+import sebastian.orderTracker.TabClientList;
+import sebastian.orderTracker.TabProductList;
 
 /**
  * Created by Senastian on 30/03/2016.

@@ -1,20 +1,19 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
+
+import sebastian.orderTracker.entities.Order;
+import sebastian.orderTracker.holders.OrderProductItemHolder;
+import sebastian.orderTracker.entities.Product;
+import sebastian.orderTracker.holders.ProductItemHolder;
+import sebastian.orderTracker.R;
 
 
 public class OrderProductItemAdapter extends ProductItemAdapter {

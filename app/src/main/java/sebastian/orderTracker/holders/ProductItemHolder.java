@@ -1,25 +1,22 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.holders;
 
 /**
  * Created by Senastian on 01/04/2016.
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 
-        import android.support.v7.widget.RecyclerView;
-        import android.view.View;
-        import android.widget.ImageView;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
+import sebastian.orderTracker.R;
+import sebastian.orderTracker.activities.ProductDetailActivity;
+import sebastian.orderTracker.entities.Product;
 
 public class ProductItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

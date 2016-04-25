@@ -1,61 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_order_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="sebastian.orderTracker.NewOrderActivity">
+    tools:openDrawer="start">
 
-    <android.support.design.widget.AppBarLayout
+    <include layout="@layout/new_order_main_body"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/new_order_content" />
-
-    <com.sa90.materialarcmenu.ArcMenu
-        android:id="@+id/new_order_arc_menu_button"
+    <android.support.design.widget.NavigationView
+        android:id="@+id/new_order_navigation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:menu_open="arc_left"
-        app:menu_scr="@drawable/new_order_arc">
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/new_order_navigation_header">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/new_order_save_button"
+        <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_save" />
+            android:id="@+id/new_order_navigation_list"
+            android:layout_gravity="center_horizontal"
+            tools:listitem="@layout/new_order_navigation_product_row"
+            android:layout_marginTop="@dimen/nav_header_height" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/new_order_revert_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_revert" />
+    </android.support.design.widget.NavigationView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/new_order_cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_delete" />
-
-    </com.sa90.materialarcmenu.ArcMenu>
-
-</android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.DrawerLayout>

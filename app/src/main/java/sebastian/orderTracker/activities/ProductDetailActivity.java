@@ -1,6 +1,5 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +15,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
 
-import sebastian.orderTracker.sincronizacion.HttpManager;
-import sebastian.orderTracker.sincronizacion.product.ProductSyncTask;
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.R;
+import sebastian.orderTracker.entities.Product;
 
 public class ProductDetailActivity extends AppCompatActivity {
 

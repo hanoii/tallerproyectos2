@@ -1,4 +1,4 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.R;
+import sebastian.orderTracker.activities.NewOrderActivity;
+import sebastian.orderTracker.entities.Client;
 
 //TODO hacer que no scrolee la activity al scrollear el mapa
 public class ClientDetails extends AppCompatActivity implements OnMapReadyCallback {
@@ -115,8 +120,8 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), NewOrderActivity.class);
                 Gson gs = new Gson();
-                String productString = gs.toJson(c);
-                intent.putExtra(view.getContext().getString(R.string.serializedProductKey), productString);
+                String clientString = gs.toJson(c);
+                intent.putExtra(view.getContext().getString(R.string.serializedClientKey), clientString);
                 view.getContext().startActivity(intent);
             }
         });

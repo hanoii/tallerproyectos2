@@ -1,4 +1,4 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +11,11 @@ import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import sebastian.orderTracker.entities.Client;
+import sebastian.orderTracker.holders.ClientItemHolder;
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.R;
 
 public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> implements Filterable{
     private final Context context;

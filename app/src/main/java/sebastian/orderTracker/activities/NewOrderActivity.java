@@ -1,16 +1,24 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.activities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,24 +33,36 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-public class NewOrderActivity extends AppCompatActivity
+import sebastian.orderTracker.CustomJsonArrayRequest;
+import sebastian.orderTracker.Global;
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.adapters.NewOrderELAdapter;
+import sebastian.orderTracker.adapters.NewOrderNavigationArrayAdapter;
+import sebastian.orderTracker.dto.NewOrderNavigationArrayData;
+import sebastian.orderTracker.entities.Product;
+import sebastian.orderTracker.R;
+
+public class NewOrderActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
 
-    List<String> listDataHeader;
-    HashMap<String, List<Product>> listDataChild;
-    HashMap<String, Integer> chosenProductsMap;
-    ExpandableListView eLV;
-    NewOrderELAdapter nOELA;
-    Context context;
-    Activity activity;
+    private List<String> listDataHeader;
+    private HashMap<String, List<Product>> listDataChild;
+    private ArrayList<NewOrderNavigationArrayData> chosenProductsList;
+    private ExpandableListView eLV;
+    private NewOrderELAdapter nOELA;
+    private NewOrderNavigationArrayAdapter nONAA;
+    private Context context;
+    private Activity activity;
+    private ListView list;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_order_activity);
         this.context = this;
         this.activity = this;
-        this.chosenProductsMap = new HashMap<>();
+        this.chosenProductsList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,7 +70,7 @@ public class NewOrderActivity extends AppCompatActivity
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chosenProductsMap = nOELA.getChosenProductsMap();
+                // Falta llevarlo a base de datos
                 Snackbar.make(view, R.string.new_order_correct_save, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -60,8 +80,10 @@ public class NewOrderActivity extends AppCompatActivity
         fabRevert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chosenProductsMap.clear();
+                chosenProductsList.clear();
                 nOELA.notifyDataSetInvalidated();
+                nONAA.notifyDataSetInvalidated();
+                notifyOrderChange();
                 Snackbar.make(view, R.string.new_order_correct_revert, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -76,7 +98,7 @@ public class NewOrderActivity extends AppCompatActivity
                         .setMessage(R.string.new_order_discard_message)
                         .setPositiveButton(R.string.new_order_discard_positive_option, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                chosenProductsMap.clear();
+                                chosenProductsList.clear();
                                 activity.finish();
                             }
                         })
@@ -96,9 +118,23 @@ public class NewOrderActivity extends AppCompatActivity
         final Global global = (Global)getApplicationContext();
         CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", global.getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.new_order_navigation);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        this.list = (ListView) findViewById(R.id.new_order_navigation_list);
+
+        nONAA = new NewOrderNavigationArrayAdapter(context, R.id.new_order_price, this.chosenProductsList);
+        list.setAdapter(nONAA);
     }
 
-    private Response.Listener<JSONArray> createRequestSuccessListener() {
+    private Response.Listener<JSONArray> createRequestSuccessListener()
+    {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
@@ -106,13 +142,16 @@ public class NewOrderActivity extends AppCompatActivity
                 ArrayList<Product> prodList = new ArrayList<>();
                 listDataHeader = new ArrayList<>();
                 listDataChild = new HashMap<>();
-                for(int i=0; i< response.length();++i) {
-                    try {
+                for(int i=0; i< response.length();++i)
+                {
+                    try
+                    {
                         Gson gsonProduct = new Gson();
                         Product p;
                         p = gsonProduct.fromJson( response.get(i).toString(), Product.class);
                         prodList.add(p);
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
@@ -145,14 +184,103 @@ public class NewOrderActivity extends AppCompatActivity
         };
     }
 
-    private Response.ErrorListener createRequestErrorListener() {
+    private Response.ErrorListener createRequestErrorListener()
+    {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
             }
-
-            ;
         };
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
+            drawer.closeDrawer(GravityCompat.START);
+        } else
+        {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        //getMenuInflater().inflate(R.menu.prueba, menu);
+        return true;
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
+        /*
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
+        drawer.closeDrawer(GravityCompat.START);*/
+        return true;
+    }
+
+    public void notifyOrderChange()
+    {
+        this.nOELA.notifyDataSetChanged();
+        this.nONAA.notifyDataSetChanged();
+        TextView total = (TextView) this.findViewById(R.id.new_order_total);
+        Double totalQuantity = 0.0;
+        for (NewOrderNavigationArrayData data : this.chosenProductsList)
+        {
+            totalQuantity += data.getQuantity().doubleValue()*Double.valueOf(data.getProduct().getPrecio());
+        }
+        total.setText("$" + totalQuantity);
+    }
+
+    public NewOrderNavigationArrayData getItemNavigation(Product product)
+    {
+        for(int i = 0; i < this.nONAA.getCount(); i++)
+        {
+            NewOrderNavigationArrayData data = (NewOrderNavigationArrayData) this.nONAA.getItem(i);
+            if (data.getProduct().equals(product))
+            {
+                return data;
+            }
+        }
+        return null;
+    }
+
+    public void addItemNavigation(NewOrderNavigationArrayData data)
+    {
+        this.nONAA.add(data);
+    }
+
+    public void removeItemNavigation(Product product)
+    {
+        for(int i = 0; i < this.nONAA.getCount(); i++)
+        {
+            NewOrderNavigationArrayData data = (NewOrderNavigationArrayData) this.nONAA.getItem(i);
+            if (data.getProduct().equals(product))
+            {
+                this.nONAA.remove(data);
+                break;
+            }
+        }
     }
 }

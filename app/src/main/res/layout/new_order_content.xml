@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/new_order_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="sebastian.orderTracker.NewOrderActivity"
+    tools:context=".activities.NewOrderActivity"
     tools:showIn="@layout/new_order_activity">
 
     <ExpandableListView

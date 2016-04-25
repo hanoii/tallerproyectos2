@@ -1,4 +1,4 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.entities;
 
 import org.json.JSONObject;
 

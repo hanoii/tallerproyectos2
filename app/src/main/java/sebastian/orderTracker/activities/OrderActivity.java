@@ -1,25 +1,16 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,6 +20,14 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+
+import sebastian.orderTracker.CustomJsonArrayRequest;
+import sebastian.orderTracker.Global;
+import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.adapters.OrderProductItemAdapter;
+import sebastian.orderTracker.entities.Product;
+import sebastian.orderTracker.adapters.ProductItemAdapter;
+import sebastian.orderTracker.R;
 
 public class OrderActivity extends AppCompatActivity {
     private ListView lv;

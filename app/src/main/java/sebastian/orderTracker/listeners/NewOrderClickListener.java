@@ -1,15 +1,18 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.listeners;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.HashMap;
+import sebastian.orderTracker.dto.NewOrderNavigationArrayData;
+import sebastian.orderTracker.entities.Product;
+import sebastian.orderTracker.activities.NewOrderActivity;
 
 /**
  * Created by matse on 22/4/2016.
  */
+
 public class NewOrderClickListener implements View.OnClickListener
 {
     public static final Integer PLUS_BUTTON_TYPE = 0;
@@ -17,18 +20,16 @@ public class NewOrderClickListener implements View.OnClickListener
     private EditText quantity;
     private Integer stock;
     private Integer type;
-    private Context context;
-    private String productID;
-    private HashMap<String, Integer> chosenProductsMap;
+    private NewOrderActivity context;
+    private Product product;
 
-    public NewOrderClickListener(Context context, Integer type, Integer stock, String productID, EditText quantity, HashMap<String, Integer> chosenProductsMap)
+    public NewOrderClickListener(Context context, Integer type, Integer stock, Product product, EditText quantity)
     {
-        this.context = context;
+        this.context = (NewOrderActivity) context;
         this.type = type;
         this.stock = stock;
-        this.productID = productID;
+        this.product = product;
         this.quantity = quantity;
-        this.chosenProductsMap = chosenProductsMap;
     }
 
     public EditText getQuantity() {
@@ -54,15 +55,11 @@ public class NewOrderClickListener implements View.OnClickListener
     @Override
     public void onClick(View v)
     {
-        Integer chosenQuantity = this.chosenProductsMap.get(this.productID);
-        int intQuantity;
-        if (chosenQuantity != null)
+        NewOrderNavigationArrayData data = this.context.getItemNavigation(this.product);
+        int intQuantity = 0;
+        if (data != null)
         {
-            intQuantity = chosenQuantity.intValue();
-        }
-        else
-        {
-            intQuantity = Integer.valueOf(this.quantity.getText().toString());
+             intQuantity = data.getQuantity().intValue();
         }
         if (this.type == PLUS_BUTTON_TYPE)
         {
@@ -73,7 +70,12 @@ public class NewOrderClickListener implements View.OnClickListener
             else
             {
                 intQuantity++;
-                this.chosenProductsMap.put(this.productID, intQuantity);
+                if (data == null)
+                {
+                    data = new NewOrderNavigationArrayData(this.product, intQuantity);
+                    this.context.addItemNavigation(data);
+                }
+                data.setQuantity(intQuantity);
                 this.quantity.setText("" + intQuantity);
             }
         }
@@ -86,9 +88,19 @@ public class NewOrderClickListener implements View.OnClickListener
             else
             {
                 intQuantity--;
-                this.chosenProductsMap.put(this.productID, intQuantity);
+                if (data == null)
+                {
+                    data = new NewOrderNavigationArrayData(this.product, intQuantity);
+                    this.context.addItemNavigation(data);
+                }
+                data.setQuantity(intQuantity);
                 this.quantity.setText("" + intQuantity);
             }
         }
+        if (intQuantity == 0)
+        {
+            this.context.removeItemNavigation(data.getProduct());
+        }
+        this.context.notifyOrderChange();
     }
 }

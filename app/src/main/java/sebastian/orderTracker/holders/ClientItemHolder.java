@@ -1,15 +1,18 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.holders;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.gson.Gson;
+
+import sebastian.orderTracker.activities.ClientDetails;
+import sebastian.orderTracker.R;
+import sebastian.orderTracker.entities.Client;
 
 
 public class ClientItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

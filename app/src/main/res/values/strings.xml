@@ -9,6 +9,8 @@
     <string name="new_order_discard_message">Esta seguro de querer eliminar el pedido actual?</string>
     <string name="new_order_discard_positive_option">Eliminar</string>
     <string name="new_order_discard_negative_option">Cancelar</string>
+    <string name="new_order_navigation_title">Carrito</string>
+    <string name="new_order_total">Total:</string>
     <string name="title_activity_client_details">ClientDetails</string>
     <string name="title_activity_product_detail">Nombre del producto</string>
     <string name="cod">Cod.:</string>

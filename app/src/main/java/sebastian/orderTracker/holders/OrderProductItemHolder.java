@@ -1,8 +1,10 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.holders;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import sebastian.orderTracker.R;
 
 /**
  * Created by Senastian on 18/04/2016.

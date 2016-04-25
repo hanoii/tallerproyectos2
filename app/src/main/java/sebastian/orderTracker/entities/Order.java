@@ -1,8 +1,6 @@
-package sebastian.orderTracker;
+package sebastian.orderTracker.entities;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Senastian on 23/04/2016.
