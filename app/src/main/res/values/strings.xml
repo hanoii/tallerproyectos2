@@ -52,7 +52,7 @@
     <string name="prompt_email">Usuario</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Loguearse</string>
+    <string name="action_sign_in_short">Ingresar</string>
     <string name="error_invalid_email">Este usuario es inválido</string>
     <string name="error_invalid_password">Esta contraseña es inválida</string>
     <string name="error_incorrect_password">Esta contraseña es incorrecta</string>
