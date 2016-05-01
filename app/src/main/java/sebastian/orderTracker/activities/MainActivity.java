@@ -1,19 +1,30 @@
 package sebastian.orderTracker.activities;
 
+import android.app.Activity;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import sebastian.orderTracker.Global;
 import sebastian.orderTracker.adapters.PagerAdapter;
 import sebastian.orderTracker.R;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +65,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Esto es el menú lateral
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        addDrawerItems();
+        //mDrawerList = (ListView)findViewById(R.id.navList);
+        //addDrawerItems();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        TextView txtVendedor = (TextView) findViewById(R.id.txtNombreVendedor);
+        txtVendedor.setText(((Global) getBaseContext().getApplicationContext()).getUsername());
         return true;
     }
 
@@ -85,4 +105,10 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(mAdapter);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Hacer algo con cada botón del menú
+        Log.d("Item: ", item.toString());
+        return false;
+    }
 }
