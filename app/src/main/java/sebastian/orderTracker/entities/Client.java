@@ -2,6 +2,7 @@ package sebastian.orderTracker.entities;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -83,7 +84,8 @@ public class Client{
             this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");
             this.id = (String)jsonClient.get("id");
             visited = false;
-        } catch(Exception e) {
+        } catch(JSONException e) {
+            e.printStackTrace();
             this.correo = "malber@gmail.com";
         }
     }

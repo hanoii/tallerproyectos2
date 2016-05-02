@@ -205,8 +205,8 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
         }
         String date = (currentTime.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + currentTime.get(Calendar.YEAR));
         Log.d("Date=",date);
-        //url = url.concat("?" + "fecha" + "[value][date]=" + date);
-        url = url.concat("?" + "fecha" + "[value][date]" + "13/04/2016");
+        url = url.concat("?" + "fecha" + "[value][date]=" + date);
+        //url = url.concat("?" + "fecha" + "[value][date]" + "13/04/2016");
         return url;
     }
 
