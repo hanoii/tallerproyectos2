@@ -26,26 +26,35 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonRequest;
 
-public class CustomJsonObjectRequest extends Request<JSONObject> {
+public class CustomJsonObjectRequest extends JsonRequest<JSONObject> {
 
     private Listener<JSONObject> listener;
     private Map<String, String> params;
 
     public CustomJsonObjectRequest(String url, Map<String, String> params,
                                    Listener<JSONObject> reponseListener, ErrorListener errorListener) {
-        super(Method.GET, url, errorListener);
+        super(Method.GET, url, " ",reponseListener, errorListener);
         this.listener = reponseListener;
         this.params = params;
     }
 
     public CustomJsonObjectRequest(int method, String url, Map<String, String> params,
                                    Listener<JSONObject> reponseListener, ErrorListener errorListener) {
-        super(method, url, errorListener);
+        super(method, url," ",reponseListener, errorListener);
         this.listener = reponseListener;
         this.params = params;
     }
 
+    public CustomJsonObjectRequest(int method, String url, Map<String, String> params, JSONObject json,
+                                   Listener<JSONObject> reponseListener, ErrorListener errorListener) {
+        super(method, url, json.toString(), reponseListener, errorListener);
+        this.listener = reponseListener;
+        this.params = params;
+    }
+
+    @Override
     protected Map<String, String> getParams()
             throws com.android.volley.AuthFailureError {
         return params;

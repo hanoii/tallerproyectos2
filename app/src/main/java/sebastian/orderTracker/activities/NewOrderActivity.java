@@ -20,25 +20,36 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import sebastian.orderTracker.CustomJsonArrayRequest;
+import sebastian.orderTracker.CustomJsonObjectRequest;
 import sebastian.orderTracker.Global;
 import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.OrderItem;
+import sebastian.orderTracker.OrderToSubmit;
+import sebastian.orderTracker.adapters.ClientRowAdapter;
 import sebastian.orderTracker.adapters.NewOrderELAdapter;
 import sebastian.orderTracker.adapters.NewOrderNavigationArrayAdapter;
 import sebastian.orderTracker.dto.NewOrderNavigationArrayData;
+import sebastian.orderTracker.entities.Client;
 import sebastian.orderTracker.entities.Product;
 import sebastian.orderTracker.R;
 
@@ -55,6 +66,9 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
     private Activity activity;
     private ListView list;
 
+    private Client c;
+    private List<Integer> nodeIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -66,11 +80,16 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String clientString = getIntent().getExtras().getString(getString(R.string.serializedClientKey));;
+        Gson gson = new Gson();
+        Client client = gson.fromJson(clientString, Client.class);
+        c = client;
+
         FloatingActionButton fabSave = (FloatingActionButton) findViewById(R.id.new_order_save_button);
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Falta llevarlo a base de datos
+                enviarItemsPedido();
                 Snackbar.make(view, R.string.new_order_correct_save, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -303,4 +322,99 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
             }
         }
     }
+
+    private void enviarItemsPedido() {
+        List<OrderItem> items = new ArrayList<OrderItem>();
+        if(nodeIds == null) {
+            nodeIds = new ArrayList<>();
+        }
+        String url = "http://dev-taller2.pantheonsite.io/api/node.json";
+        for(int i = 0; i < chosenProductsList.size(); ++i) {
+            OrderItem item = new OrderItem(chosenProductsList.get(i).getProduct(), chosenProductsList.get(i).getQuantity());
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(item);
+            JSONObject json = null;
+            try {
+                json = new JSONObject(jsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            final Global global = (Global)getApplicationContext();
+            CustomJsonObjectRequest jsObjRequest = new CustomJsonObjectRequest(Request.Method.POST, url, global.getUserPass(), json, this.createItemSubmitSuccessListener(), this.createRequestErrorListener());
+            NetworkManagerSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+        }
+    }
+
+    private Response.Listener<JSONObject> createItemSubmitSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response != null)
+                {
+                    try {
+                        nodeIds.add(Integer.parseInt((String)response.get("nid")));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if(nodeIds.size() == chosenProductsList.size()) {
+                        enviarPedido();
+                    }
+                }
+
+            }
+        };
+    }
+
+    private double calculatePrice() {
+        Double price = 0.0;
+        for(int i = 0; i < chosenProductsList.size()-1; ++i) {
+            Double p = Double.parseDouble(chosenProductsList.get(i).getProduct().getPrecio());
+            Double cant = chosenProductsList.get(i).getQuantity().doubleValue();
+            price += p * cant;
+        }
+        return price;
+    }
+
+    private void enviarPedido() {
+        Gson gson = new Gson();
+        Calendar currentTime = Calendar.getInstance();
+        Integer day = currentTime.get(Calendar.DAY_OF_MONTH);
+        Integer month = currentTime.get(Calendar.MONTH);
+        String daystr = day.toString();
+        String monthstr = month.toString();
+        if(day < 10) {
+            daystr = "0"+daystr;
+        }
+        if(month < 10) {
+            monthstr = "0"+monthstr;
+        }
+        String date = "" + daystr + "/" +
+                monthstr + "/" + currentTime.get(Calendar.YEAR);
+        OrderToSubmit order = new OrderToSubmit(calculatePrice(), date, nodeIds, c.getId());
+        String jsonString = gson.toJson(order);
+        JSONObject json = null;
+        try {
+            json = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final Global global = (Global)getApplicationContext();
+        String url = "http://dev-taller2.pantheonsite.io/api/node.json";
+        CustomJsonObjectRequest jsObjRequest = new CustomJsonObjectRequest(Request.Method.POST, url, global.getUserPass(), json, this.createOrderSubmitSuccessListener(), this.createRequestErrorListener());
+        NetworkManagerSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+    }
+
+    private Response.Listener<JSONObject> createOrderSubmitSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response != null)
+                {
+                 int i = 6;
+                }
+
+            }
+        };
+    }
+
 }
