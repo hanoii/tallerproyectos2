@@ -1,6 +1,7 @@
 package sebastian.orderTracker.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -108,7 +111,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Hacer algo con cada botón del menú
-        Log.d("Item: ", item.toString());
+        switch (item.getItemId()) {
+            case R.id.nav_fuera_ruta: {
+                Intent intent = new Intent(getBaseContext().getApplicationContext(), OffRouteActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getBaseContext().getApplicationContext().startActivity(intent);
+                return true;
+            }
+        }
         return false;
     }
 }

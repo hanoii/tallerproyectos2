@@ -1,5 +1,6 @@
 package sebastian.orderTracker;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,7 +53,7 @@ public class TabClientList extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);
         int day = toCalendarConvention(getArguments().getInt("day"));
-        clientAdapter = new ClientRowAdapter(getContext(), new ArrayList<Client>(), day);
+        clientAdapter = createAdapter(getContext(), new ArrayList<Client>(), day);
         final Global global = (Global)getActivity().getApplicationContext();
         CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), global.getUserPass(), this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
@@ -73,6 +74,10 @@ public class TabClientList extends Fragment {
         });
         rv.setAdapter(clientAdapter);
         return v;
+    }
+
+    protected ClientRowAdapter createAdapter(Context context, ArrayList<Client> list, int day) {
+        return new ClientRowAdapter(context, list, day);
     }
 
 
@@ -116,7 +121,7 @@ public class TabClientList extends Fragment {
             return day + 2;
     }
 
-    private String getFormattedUrl(int day) {
+    protected String getFormattedUrl(int day) {
         String url = "http://dev-taller2.pantheonsite.io/api/clientes.json";
         Calendar currentTime = Calendar.getInstance();
         int dif = day - currentTime.get(Calendar.DAY_OF_WEEK);
