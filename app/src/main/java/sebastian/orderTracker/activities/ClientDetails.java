@@ -32,18 +32,10 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-
 import sebastian.orderTracker.CustomJsonArrayRequest;
-import java.net.URI;
-import java.util.ArrayList;
 
 import sebastian.orderTracker.NetworkManagerSingleton;
 import sebastian.orderTracker.R;
-import sebastian.orderTracker.activities.NewOrderActivity;
 import sebastian.orderTracker.entities.Client;
 import sebastian.orderTracker.Global;
 
