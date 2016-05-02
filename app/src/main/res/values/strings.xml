@@ -157,4 +157,5 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_prueba">Prueba</string>
+    <string name="action_scan">com.google.zxing.client.android.SCAN</string>
 </resources>

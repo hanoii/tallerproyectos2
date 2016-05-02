@@ -1,6 +1,11 @@
 package sebastian.orderTracker.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -10,8 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,10 +30,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
+import sebastian.orderTracker.CustomJsonArrayRequest;
 import sebastian.orderTracker.NetworkManagerSingleton;
 import sebastian.orderTracker.R;
 import sebastian.orderTracker.activities.NewOrderActivity;
 import sebastian.orderTracker.entities.Client;
+import sebastian.orderTracker.Global;
 
 //TODO hacer que no scrolee la activity al scrollear el mapa
 public class ClientDetails extends AppCompatActivity implements OnMapReadyCallback {
@@ -118,11 +135,16 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         findViewById(R.id.fab_order).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), NewOrderActivity.class);
-                Gson gs = new Gson();
-                String clientString = gs.toJson(c);
-                intent.putExtra(view.getContext().getString(R.string.serializedClientKey), clientString);
-                view.getContext().startActivity(intent);
+                try
+                {
+                    //start the scanning activity from the com.google.zxing.client.android.SCAN intent
+                    Intent intent = new Intent(getString(R.string.action_scan));
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                    startActivityForResult(intent, 0);
+                } catch (ActivityNotFoundException anfe)
+                {
+                    showDialog(ClientDetails.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+                }
             }
         });
     }
@@ -130,7 +152,8 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
 
 
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(GoogleMap map)
+    {
         LatLng pos = new LatLng(c.getLat(), c.getLng());
         map.moveCamera(CameraUpdateFactory.newLatLng(pos));
         map.addMarker(new MarkerOptions()
@@ -138,6 +161,94 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                 .title(c.getNombre()));
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                //get the extras that are returned from the intent
+                String result = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
+                CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + result, ((Global)getApplicationContext()).getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
+                NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 
+                Toast toast = Toast.makeText(this, "Content:" + result + " Format:" + format, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
+
+    private AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo)
+    {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    act.startActivity(intent);
+                } catch (ActivityNotFoundException anfe) {
+                    Toast toast = Toast.makeText(ClientDetails.this, "Error", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+        downloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        return downloadDialog.show();
+    }
+
+    private Response.Listener<JSONArray> createRequestSuccessListener()
+    {
+        return new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                if (response.length() == 0)
+                {
+                    Toast toast = Toast.makeText(ClientDetails.this, "Cliente inexistente", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else
+                {
+                    try
+                    {
+                        Toast toast = Toast.makeText(ClientDetails.this, response.getString(0), Toast.LENGTH_LONG);
+                        toast.show();
+
+                        Gson gson = new Gson();
+                        Client clienteQR;
+                        clienteQR = gson.fromJson( response.get(0).toString(), Client.class);
+
+                        // Revisar esta comparacion porque es un asco
+                        if (clienteQR.getNombre().compareTo(c.getNombre()) == 0)
+                        {
+                            Intent newIntent = new Intent(ClientDetails.this, NewOrderActivity.class);
+                            Gson gs = new Gson();
+                            String clientString = gs.toJson(c);
+                            newIntent.putExtra(getString(R.string.serializedClientKey), clientString);
+                            startActivity(newIntent);
+                        }
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+    }
+
+    private Response.ErrorListener createRequestErrorListener()
+    {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        };
+    }
 }
