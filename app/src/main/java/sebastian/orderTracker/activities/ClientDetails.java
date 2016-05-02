@@ -1,6 +1,7 @@
 package sebastian.orderTracker.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -21,6 +23,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+
+import java.net.URI;
+import java.util.ArrayList;
 
 import sebastian.orderTracker.NetworkManagerSingleton;
 import sebastian.orderTracker.R;
@@ -138,6 +143,25 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                 .title(c.getNombre()));
     }
 
+    public void startCall(View view) {
+        String number = "tel:" + c.getMobilePhoneNumber();
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+        try {
+            startActivity(intent);
+        } catch(SecurityException e) {
 
+        }
+    }
 
+    public void sendMail(View v) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , c.getCorreo());
+        i.putExtra(Intent.EXTRA_SUBJECT, "[VENDEDOR]");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ClientDetails.this, "No hay aplicación de E-Mails Instalada", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
