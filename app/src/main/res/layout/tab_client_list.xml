@@ -2,18 +2,46 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/tab_client_list_client_search"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-        <requestFocus />
-    </EditText>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:id="@+id/client_tab_toolbar"
+        android:clickable="false"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/tab_client_list_client_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8">
+            <requestFocus />
+        </EditText>
+        <ImageButton
+            android:id="@+id/map_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:background="@null"
+            android:src="@drawable/ic_menu_mapmode"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2sp" />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
+        android:layout_height="@dimen/clients_route_height"
+        android:layout_below="@id/client_tab_toolbar"
+        android:id="@+id/map" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/client_list"
-        android:layout_below="@id/tab_client_list_client_search"
+        android:layout_below="@id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"

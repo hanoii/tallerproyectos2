@@ -38,6 +38,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import sebastian.orderTracker.CustomJsonArrayRequest;
+import java.net.URI;
+import java.util.ArrayList;
+
 import sebastian.orderTracker.NetworkManagerSingleton;
 import sebastian.orderTracker.R;
 import sebastian.orderTracker.activities.NewOrderActivity;
@@ -159,6 +162,28 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(c.getLat(), c.getLng()))
                 .title(c.getNombre()));
+    }
+
+    public void startCall(View view) {
+        String number = "tel:" + c.getMobilePhoneNumber();
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+        try {
+            startActivity(intent);
+        } catch(SecurityException e) {
+
+        }
+    }
+
+    public void sendMail(View v) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , c.getCorreo());
+        i.putExtra(Intent.EXTRA_SUBJECT, "[VENDEDOR]");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ClientDetails.this, "No hay aplicación de E-Mails Instalada", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent)

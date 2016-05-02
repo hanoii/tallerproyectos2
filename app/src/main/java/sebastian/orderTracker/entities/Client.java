@@ -1,5 +1,7 @@
 package sebastian.orderTracker.entities;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONObject;
 
 
@@ -32,6 +34,10 @@ public class Client{
         return direccion;
     }
 
+    public LatLng getDireccionAsLatLng() {
+        LatLng latlng = new LatLng(lat, lng);
+        return latlng;
+    }
 
     public String getCorreo() {
         return correo;

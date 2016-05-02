@@ -58,6 +58,14 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
         return null;
     }
 
+    public Client getByPosition(int position) {
+        return clients.get(position);
+    }
+
+    public int size() {
+        return clients.size();
+    }
+
     private class ClientFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
