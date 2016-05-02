@@ -95,7 +95,8 @@
                 android:id="@+id/textView4"
                 android:layout_marginRight="@dimen/product_text_margin"
                 android:layout_marginLeft="@dimen/product_text_margin"
-                android:layout_marginTop="@dimen/product_text_margin" />
+                android:layout_marginTop="@dimen/product_text_margin"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -105,7 +106,8 @@
                 android:textColor="@color/primary_dark_material_light"
                 android:id="@+id/txt_cantidad_disponible"
                 android:layout_marginRight="@dimen/product_text_margin"
-                android:layout_marginTop="@dimen/product_text_margin" />
+                android:layout_marginTop="@dimen/product_text_margin"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -120,14 +122,16 @@
             android:background="@color/colorAccent"
             android:gravity="center"
             android:textStyle="bold"
-            android:alpha="0.75" />
+            android:alpha="0.75"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/product_text_margin"
-            android:layout_marginTop="@dimen/product_text_margin">
+            android:layout_marginTop="@dimen/product_text_margin"
+            android:visibility="gone">
 
             <LinearLayout
                 android:orientation="horizontal"

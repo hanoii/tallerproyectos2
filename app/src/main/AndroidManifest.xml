@@ -77,6 +77,9 @@
         <activity
             android:name=".activities.NewOrderActivity"
             android:parentActivityName=".activities.ClientDetails" />
+        <activity
+            android:name=".activities.OffRouteActivity"
+            android:parentActivityName=".activities.MainActivity" />
     </application>
 
 </manifest>
