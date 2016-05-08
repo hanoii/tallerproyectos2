@@ -135,9 +135,11 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
                         e.printStackTrace();
                     }
                 }
-                map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
-                clientAdapter.notifyDataSetChanged();
-                drawRoute();
+                if(response.length() > 0) {
+                    map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
+                    clientAdapter.notifyDataSetChanged();
+                    drawRoute();
+                }
             }
         };
     }
