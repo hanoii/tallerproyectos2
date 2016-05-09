@@ -367,7 +367,7 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
 
     private double calculatePrice() {
         Double price = 0.0;
-        for(int i = 0; i < chosenProductsList.size()-1; ++i) {
+        for(int i = 0; i < chosenProductsList.size(); ++i) {
             Double p = Double.parseDouble(chosenProductsList.get(i).getProduct().getPrecio());
             Double cant = chosenProductsList.get(i).getQuantity().doubleValue();
             price += p * cant;

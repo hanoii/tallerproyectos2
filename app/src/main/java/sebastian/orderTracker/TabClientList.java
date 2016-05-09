@@ -267,7 +267,7 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
 
     public ArrayList<LatLng> drawMarkers() {
         ArrayList<LatLng> locations = new ArrayList<LatLng>();
-        for(int i = 0; i < clientAdapter.size()-1; ++i) {
+        for(int i = 0; i < clientAdapter.size(); ++i) {
             Client c = clientAdapter.getByPosition(i);
             locations.add(c.getDireccionAsLatLng());
             map.addMarker(new MarkerOptions()
