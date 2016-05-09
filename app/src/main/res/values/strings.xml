@@ -37,6 +37,7 @@
     <string name="fuera_de_ruta">Fuera de Ruta</string>
     <string name="catalogo">Catalogo</string>
     <string name="configuracion">Configuracion</string>
+    <string name="no_visits_available">No hay visitas Asignadas</string>
     <string-array name="days">
         <item>Lunes</item>
         <item>Martes</item>

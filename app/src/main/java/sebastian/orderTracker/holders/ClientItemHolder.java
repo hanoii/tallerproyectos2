@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -56,12 +57,13 @@ public class ClientItemHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void setSemaphore(int state) {
+        ImageView sem = (ImageView)itemView.findViewById(R.id.semaphore);
         if(state > 0)
-            itemView.getBackground().setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.Green500), PorterDuff.Mode.DARKEN);
+            sem.setImageResource(R.drawable.green_light_small);
         else if(state < 0)
-            itemView.getBackground().setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.Yellow500), PorterDuff.Mode.DARKEN);
+            sem.setImageResource(R.drawable.yellow_light_small);
         else
-            itemView.getBackground().setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.Red500), PorterDuff.Mode.DARKEN);
+            sem.setImageResource(R.drawable.red_light_small);
     }
 
 }

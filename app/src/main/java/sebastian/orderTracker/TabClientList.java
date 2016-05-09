@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -57,6 +59,7 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
     private ClientRowAdapter clientAdapter;
     private LinearLayoutManager layoutManager;
     View v;
+    RecyclerView rv;
     GoogleMap map;
     private SupportMapFragment mapFragment;
 
@@ -82,7 +85,7 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.tab_client_list, container, false);
-        RecyclerView rv = (RecyclerView) v.findViewById(R.id.client_list);
+        rv = (RecyclerView) v.findViewById(R.id.client_list);
         rv.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);
@@ -111,6 +114,8 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
         addShowHideListener(R.id.map_button, mapFragment);
 
         rv.setAdapter(clientAdapter);
+
+
         return v;
     }
 
@@ -135,10 +140,16 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
                         e.printStackTrace();
                     }
                 }
+                TextView emptyView = (TextView) v.findViewById(R.id.empty_view);
                 if(response.length() > 0) {
                     map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
                     clientAdapter.notifyDataSetChanged();
                     drawRoute();
+                    rv.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                } else {
+                    rv.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
                 }
             }
         };
@@ -214,9 +225,10 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
-        LatLng pos = new LatLng(20, 20);
+       // LatLng pos = new LatLng(20, 20);
         this.map = map;
-        map.moveCamera(CameraUpdateFactory.newLatLng(pos));
+        map.moveCamera(CameraUpdateFactory.zoomTo(9));
+      //  map.moveCamera(CameraUpdateFactory.newLatLng(pos));
         mapFragment.onResume();
     }
 

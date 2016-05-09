@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -106,6 +107,7 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();
         holder.portrait.setImageUrl(filteredClients.get(position).getImagen(), mImageLoader);
         setSemaphore(holder, filteredClients.get(position));
+
     }
 
     @Override

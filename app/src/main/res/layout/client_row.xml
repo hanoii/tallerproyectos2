@@ -6,37 +6,46 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/client_row"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-    <TextView
-        android:id="@+id/client_name"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/client_row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@android:style/TextAppearance.Material.Large"
-        />
-    <TextView
-        android:id="@+id/client_enterprise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/client_name"
-        style="@android:style/TextAppearance.Material"
-        android:textStyle="bold"
-        android:text="Dirección:"/>
-    <TextView
-        android:id="@+id/client_adress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/client_enterprise"
-        style="@android:style/TextAppearance.Material"
-        android:text="Dirección:"/>
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/client_portrait"
-        android:layout_width="90sp"
-        android:layout_height="90sp"
-        android:layout_alignParentRight="true"/>
-</RelativeLayout>
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/client_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/TextAppearance.Material.Large"
+            />
+        <ImageView
+            android:id="@+id/semaphore"
+            android:layout_width="22sp"
+            android:layout_height="22sp"
+            android:paddingTop="9sp"
+            android:paddingLeft="6sp"
+            android:background="@android:color/transparent"
+            android:adjustViewBounds="true"
+            android:layout_toRightOf="@id/client_name" />
+        <TextView
+            android:id="@+id/client_enterprise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/client_name"
+            style="@android:style/TextAppearance.Material"
+            android:textStyle="bold"
+            android:text="Dirección:"/>
+        <TextView
+            android:id="@+id/client_adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/client_enterprise"
+            style="@android:style/TextAppearance.Material"
+            android:text="Dirección:"/>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/client_portrait"
+            android:layout_width="90sp"
+            android:layout_height="90sp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
