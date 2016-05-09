@@ -141,8 +141,9 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
                     }
                 }
                 TextView emptyView = (TextView) v.findViewById(R.id.empty_view);
-                if(response.length() > 0) {
-                    map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
+                if(response.length() > 0 && clientAdapter.size() > 0) {
+                    if (map != null)
+                        map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
                     clientAdapter.notifyDataSetChanged();
                     drawRoute();
                     rv.setVisibility(View.VISIBLE);
@@ -180,7 +181,8 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
 
 
     public void updateMap(List<LatLng> coordinates) {
-        map.moveCamera(CameraUpdateFactory.newLatLng(coordinates.get(0)));
+        if(clientAdapter.size() > 0)
+                map.moveCamera(CameraUpdateFactory.newLatLng(clientAdapter.getByPosition(0).getDireccionAsLatLng()));
         PolylineOptions rectOptions = new PolylineOptions().addAll(coordinates).color(R.color.darkRed);
         map.addPolyline(rectOptions);
     }
