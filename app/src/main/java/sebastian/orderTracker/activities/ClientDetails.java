@@ -186,11 +186,20 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                 String result = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
-                CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + result, ((Global)getApplicationContext()).getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
+                if (c.getId().compareTo(result) == 0)
+                {
+                    Intent newIntent = new Intent(ClientDetails.this, NewOrderActivity.class);
+                    Gson gs = new Gson();
+                    String clientString = gs.toJson(c);
+                    newIntent.putExtra(getString(R.string.serializedClientKey), clientString);
+                    startActivity(newIntent);
+                }
+
+                /*CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + result, ((Global)getApplicationContext()).getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
                 NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 
                 Toast toast = Toast.makeText(this, "Content:" + result + " Format:" + format, Toast.LENGTH_LONG);
-                toast.show();
+                toast.show();*/
             }
         }
     }

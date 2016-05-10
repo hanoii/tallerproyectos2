@@ -9,19 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/new_order_navigation_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="20sp"
-        android:textStyle="bold|italic"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_rowSpan="2"
-        android:layout_marginLeft="20dp" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,18 +24,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/new_order_total"
-        android:layout_row="3"
-        android:layout_column="0"
-        android:layout_rowSpan="2"
-        android:layout_marginLeft="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/new_order_total"
-        android:layout_row="3"
-        android:layout_column="3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_marginLeft="20dp"
+        android:layout_row="0"
+        android:layout_column="0"
         android:layout_rowSpan="2"
         android:text="$0" />
 

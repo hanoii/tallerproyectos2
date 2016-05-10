@@ -404,17 +404,53 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         NetworkManagerSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
     }
 
+    private void actualizarStocks()
+    {
+        final Global global = (Global)getApplicationContext();
+        for (NewOrderNavigationArrayData data : this.chosenProductsList)
+        {
+            Gson gson = new Gson();
+            data.getProduct().setStock("" + (Integer.valueOf(data.getProduct().getStock()) - data.getQuantity()));
+            String jsonString = gson.toJson(data.getProduct());
+            JSONObject json = null;
+            try {
+                json = new JSONObject(jsonString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            CustomJsonObjectRequest jsObjRequest = new CustomJsonObjectRequest(Request.Method.POST,
+                    "http://dev-taller2.pantheonsite.io/api/node/" + data.getProduct().getId(),
+                    global.getUserPass(),
+                    json,
+                    this.createStockSubmitSuccessListener(),
+                    this.createRequestErrorListener());
+            //NetworkManagerSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+        }
+    }
+
     private Response.Listener<JSONObject> createOrderSubmitSuccessListener() {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (response != null)
                 {
-                 int i = 6;
+                    actualizarStocks();
                 }
 
             }
         };
     }
 
+    private Response.Listener<JSONObject> createStockSubmitSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                if (response != null)
+                {
+                    int i = 6;
+                }
+
+            }
+        };
+    }
 }

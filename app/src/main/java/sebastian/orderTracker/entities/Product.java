@@ -17,6 +17,7 @@ public class Product implements Serializable {
     private String imagen;
     private Descripcion descripcion;
     private String categoria;
+    private String stock;
 
 
     public void setDrawableBitmap(Bitmap drawableBitmap) {
@@ -37,11 +38,12 @@ public class Product implements Serializable {
         }
     }
 
-    public Product(String name, String marca, int codigo, String imgSrc, double precio, int imgId) {
+    public Product(String name, String marca, int codigo, String imgSrc, double precio, int imgId, String stock) {
         this.titulo = name + " " + marca;
         this.id = ""+codigo;
         this.imagen = imgSrc;
         this.precio = ""+precio;
+        this.stock = "" + stock;
     }
 
     public boolean equals(Product p) {
@@ -161,6 +163,10 @@ public class Product implements Serializable {
     public String getCategoria() {return this.categoria;}
 
     public void setCategoria(String categoria) {this.categoria = categoria;}
+
+    public String getStock() {return this.stock;}
+
+    public void setStock(String stock) {this.stock = stock;}
 
     @Override
     public boolean equals(Object p)

@@ -58,7 +58,7 @@ public class NewOrderELAdapter extends BaseExpandableListAdapter
             convertView = inflater.inflate(R.layout.new_order_product_row, null);
         }
 
-        Integer stock = 10; // Esto saldria de Product
+        Integer stock = Integer.valueOf(child.getStock());
         TextView price = (TextView) convertView.findViewById(R.id.new_order_price);
         TextView name = (TextView) convertView.findViewById(R.id.new_order_name);
         TextView code = (TextView) convertView.findViewById(R.id.new_order_code);
@@ -82,6 +82,7 @@ public class NewOrderELAdapter extends BaseExpandableListAdapter
 
         plusButton.setOnClickListener(new NewOrderClickListener(this.context, NewOrderClickListener.PLUS_BUTTON_TYPE, stock, child, quantity));
         minusButton.setOnClickListener(new NewOrderClickListener(this.context, NewOrderClickListener.MINUS_BUTTON_TYPE, stock, child, quantity));
+        //quantity.addTextChangedListener(new NewOrderTextListener(this.context, stock, child, quantity));
         return convertView;
     }
 
@@ -122,6 +123,9 @@ public class NewOrderELAdapter extends BaseExpandableListAdapter
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.new_order_item);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
+        ImageButton button = (ImageButton) convertView.findViewById(R.id.new_order_discount_button);
+        //button.setVisibility(ImageButton.VISIBLE);
+        button.setFocusable(false);
 
         return convertView;
     }

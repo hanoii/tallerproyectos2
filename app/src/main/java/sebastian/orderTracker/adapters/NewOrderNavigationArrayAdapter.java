@@ -45,7 +45,7 @@ public class NewOrderNavigationArrayAdapter extends ArrayAdapter
             convertView = inflater.inflate(R.layout.new_order_navigation_product_row, null);
         }
 
-        Integer stock = 10; // Esto saldria de Product
+        Integer stock = Integer.valueOf(data.getProduct().getStock());
         TextView price = (TextView) convertView.findViewById(R.id.new_order_price);
         TextView name = (TextView) convertView.findViewById(R.id.new_order_name);
         TextView code = (TextView) convertView.findViewById(R.id.new_order_code);
