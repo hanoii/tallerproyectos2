@@ -7,6 +7,7 @@ package sebastian.orderTracker.adapters;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -16,11 +17,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import sebastian.orderTracker.NetworkManagerSingleton;
+import sebastian.orderTracker.entities.Discount;
 import sebastian.orderTracker.listeners.NewOrderClickListener;
 import sebastian.orderTracker.dto.NewOrderNavigationArrayData;
 import sebastian.orderTracker.entities.Product;
@@ -82,6 +85,26 @@ public class NewOrderELAdapter extends BaseExpandableListAdapter
 
         plusButton.setOnClickListener(new NewOrderClickListener(this.context, NewOrderClickListener.PLUS_BUTTON_TYPE, stock, child, quantity));
         minusButton.setOnClickListener(new NewOrderClickListener(this.context, NewOrderClickListener.MINUS_BUTTON_TYPE, stock, child, quantity));
+
+        ImageButton discountButton = (ImageButton) convertView.findViewById(R.id.new_order_product_discount_button);
+
+        //Descuentos
+        final Discount discount = this.context.getDiscountForProduct(child);
+        if (discount != null)
+        {
+            discountButton.setVisibility(ImageButton.VISIBLE);
+            discountButton.setFocusable(false);
+        }
+        else
+        {
+            discountButton.setVisibility(ImageButton.INVISIBLE);
+        }
+        discountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, discount.getTitulo(), Toast.LENGTH_SHORT).show();
+            }
+        });
         //quantity.addTextChangedListener(new NewOrderTextListener(this.context, stock, child, quantity));
         return convertView;
     }
@@ -123,10 +146,23 @@ public class NewOrderELAdapter extends BaseExpandableListAdapter
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.new_order_item);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        ImageButton button = (ImageButton) convertView.findViewById(R.id.new_order_discount_button);
-        //button.setVisibility(ImageButton.VISIBLE);
-        button.setFocusable(false);
-
+        ImageButton discountButton = (ImageButton) convertView.findViewById(R.id.new_order_category_discount_button);
+        final Discount discount = this.context.getDiscountForCategory(headerTitle);
+        if (discount != null)
+        {
+            discountButton.setVisibility(ImageButton.VISIBLE);
+            discountButton.setFocusable(false);
+        }
+        else
+        {
+            discountButton.setVisibility(ImageButton.INVISIBLE);
+        }
+        discountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, discount.getTitulo(), Toast.LENGTH_SHORT).show();
+            }
+        });
         return convertView;
     }
 

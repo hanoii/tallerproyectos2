@@ -12,4 +12,5 @@
     <color name="White">#FFFFFF</color>
     <color name="PriceOrange">#EA4302</color>
     <color name="PriceGreen">#2EDC74</color>
+    <color name="Gray">#EEEEEE</color>
 </resources>

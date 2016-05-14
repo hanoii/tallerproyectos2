@@ -16,16 +16,17 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="false"
-        android:layout_alignTop="@+id/new_order_discount_button"
-        android:layout_alignBottom="@+id/new_order_discount_button"
+        android:layout_alignTop="@+id/new_order_category_discount_button"
+        android:layout_alignBottom="@+id/new_order_category_discount_button"
         android:gravity="center_vertical" />
 
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
-        android:id="@+id/new_order_discount_button"
+        android:id="@+id/new_order_category_discount_button"
         android:src="@android:drawable/btn_star_big_on"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@color/Gray" />
 </RelativeLayout>

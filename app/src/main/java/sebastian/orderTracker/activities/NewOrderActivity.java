@@ -24,14 +24,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -45,11 +44,11 @@ import sebastian.orderTracker.Global;
 import sebastian.orderTracker.NetworkManagerSingleton;
 import sebastian.orderTracker.OrderItem;
 import sebastian.orderTracker.OrderToSubmit;
-import sebastian.orderTracker.adapters.ClientRowAdapter;
 import sebastian.orderTracker.adapters.NewOrderELAdapter;
 import sebastian.orderTracker.adapters.NewOrderNavigationArrayAdapter;
 import sebastian.orderTracker.dto.NewOrderNavigationArrayData;
 import sebastian.orderTracker.entities.Client;
+import sebastian.orderTracker.entities.Discount;
 import sebastian.orderTracker.entities.Product;
 import sebastian.orderTracker.R;
 
@@ -59,6 +58,7 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
     private List<String> listDataHeader;
     private HashMap<String, List<Product>> listDataChild;
     private ArrayList<NewOrderNavigationArrayData> chosenProductsList;
+    private ArrayList<Discount> discounts;
     private ExpandableListView eLV;
     private NewOrderELAdapter nOELA;
     private NewOrderNavigationArrayAdapter nONAA;
@@ -77,6 +77,7 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         this.context = this;
         this.activity = this;
         this.chosenProductsList = new ArrayList<>();
+        this.discounts = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -112,21 +113,33 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = "";
+                for (Discount d : discounts)
+                {
+                    if (d.isGlobal())
+                    {
+                        message += d.getTitulo()  + "\n";
+                    }
+                }
+                if (message.length() == 0)
+                {
+                    message = "No hay descuentos para el periodo actual";
+                }
                 new AlertDialog.Builder(context)
-                        .setTitle(R.string.new_order_discard_title)
-                        .setMessage(R.string.new_order_discard_message)
-                        .setPositiveButton(R.string.new_order_discard_positive_option, new DialogInterface.OnClickListener() {
+                        .setTitle("Descuentos globales")
+                        .setMessage(message)
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                chosenProductsList.clear();
-                                activity.finish();
+                                /*chosenProductsList.clear();
+                                activity.finish();*/
                             }
                         })
-                        .setNegativeButton(R.string.new_order_discard_negative_option, new DialogInterface.OnClickListener() {
+                        /*.setNegativeButton(R.string.new_order_discard_negative_option, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // do nothing
                             }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        })*/
+                        .setIcon(android.R.drawable.ic_dialog_info)
                         .show();
             }
         });
@@ -135,7 +148,12 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         this.nOELA = new NewOrderELAdapter(this);
 
         final Global global = (Global)getApplicationContext();
-        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", global.getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
+        SimpleDateFormat sDF = new SimpleDateFormat("dd/MM/yyyy");
+        String date = sDF.format(Calendar.getInstance().getTime());
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/descuentos.json?fecha[value][date]=" + date, global.getUserPass(), this.createRequestDiscountSuccessListener(), this.createRequestErrorListener());
+        NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
+
+        jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", global.getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
@@ -150,6 +168,30 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
 
         nONAA = new NewOrderNavigationArrayAdapter(context, R.id.new_order_price, this.chosenProductsList);
         list.setAdapter(nONAA);
+    }
+
+    private Response.Listener<JSONArray> createRequestDiscountSuccessListener()
+    {
+        return new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                for(int i=0; i< response.length();++i)
+                {
+                    try
+                    {
+                        Gson gsonDiscount = new Gson();
+                        Discount discount;
+                        discount = gsonDiscount.fromJson(response.get(i).toString(), Discount.class);
+                        discounts.add(discount);
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
     }
 
     private Response.Listener<JSONArray> createRequestSuccessListener()
@@ -284,12 +326,8 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         this.nOELA.notifyDataSetChanged();
         this.nONAA.notifyDataSetChanged();
         TextView total = (TextView) this.findViewById(R.id.new_order_total);
-        Double totalQuantity = 0.0;
-        for (NewOrderNavigationArrayData data : this.chosenProductsList)
-        {
-            totalQuantity += data.getQuantity().doubleValue()*Double.valueOf(data.getProduct().getPrecio());
-        }
-        total.setText("$" + totalQuantity);
+        Double totalQuantity = this.calculatePrice();
+        total.setText("$" + Math.floor(totalQuantity));
     }
 
     public NewOrderNavigationArrayData getItemNavigation(Product product)
@@ -366,13 +404,45 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
     }
 
     private double calculatePrice() {
-        Double price = 0.0;
+        Double plainPrice = 0.0;
+        Double adjustedPrice = 0.0;
+        Integer totalQuantities = 0;
+        Integer porcentajeGlobal = 0;
         for(int i = 0; i < chosenProductsList.size(); ++i) {
             Double p = Double.parseDouble(chosenProductsList.get(i).getProduct().getPrecio());
             Double cant = chosenProductsList.get(i).getQuantity().doubleValue();
-            price += p * cant;
+            plainPrice += p * cant;
+            totalQuantities += chosenProductsList.get(i).getQuantity();
+            Integer porcentaje = 0;
+            Discount discount = getDiscountForProduct(chosenProductsList.get(i).getProduct());
+            if (discount != null)
+            {
+                porcentaje += discount.getPorcentaje();
+            }
+            discount = getDiscountForCategory(chosenProductsList.get(i).getProduct().getCategoria());
+            if (discount != null)
+            {
+                porcentaje += discount.getPorcentaje();
+            }
+            adjustedPrice += (p*cant)*(100 - porcentaje)/100;
         }
-        return price;
+
+        for (Discount d : discounts)
+        {
+            if (d.isGlobal())
+            {
+                if (d.getValor() != 0.0 && plainPrice >= d.getValor())
+                {
+                    porcentajeGlobal += d.getPorcentaje();
+                }
+                if (d.getCantidad() != 0 && totalQuantities >= d.getCantidad())
+                {
+                    porcentajeGlobal += d.getPorcentaje();
+                }
+            }
+        }
+        adjustedPrice -= plainPrice * porcentajeGlobal/100;
+        return adjustedPrice;
     }
 
     private void enviarPedido() {
@@ -452,5 +522,37 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
 
             }
         };
+    }
+
+    public Discount getDiscountForCategory(String category)
+    {
+        if (category == null) return null;
+        for(Discount d : this.discounts)
+        {
+            for (String categoria : d.getCategorias())
+            {
+                if (category.compareTo(categoria) == 0)
+                {
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Discount getDiscountForProduct(Product product)
+    {
+        if (product == null) return null;
+        for(Discount d : this.discounts)
+        {
+            for (Integer productId : d.getProductos())
+            {
+                if (product.getId().compareTo(productId.toString()) == 0)
+                {
+                    return d;
+                }
+            }
+        }
+        return null;
     }
 }
