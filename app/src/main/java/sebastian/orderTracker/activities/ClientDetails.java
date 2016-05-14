@@ -133,14 +133,9 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                 try
                 {
                     //start the scanning activity from the com.google.zxing.client.android.SCAN intent
-                    /*Intent intent = new Intent(getString(R.string.action_scan));
+                    Intent intent = new Intent(getString(R.string.action_scan));
                     intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                    startActivityForResult(intent, 0);*/
-                    Intent newIntent = new Intent(ClientDetails.this, NewOrderActivity.class);
-                    Gson gs = new Gson();
-                    String clientString = gs.toJson(c);
-                    newIntent.putExtra(getString(R.string.serializedClientKey), clientString);
-                    startActivity(newIntent);
+                    startActivityForResult(intent, 0);
                 } catch (ActivityNotFoundException anfe)
                 {
                     showDialog(ClientDetails.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
