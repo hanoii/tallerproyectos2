@@ -3,9 +3,13 @@ package sebastian.orderTracker.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -156,8 +160,24 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/productos.json", global.getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.new_order_drawer);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(false);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.order, this.getTheme());
+        Bitmap b = ((BitmapDrawable)drawable).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 80, 80, false);
+        drawable = new BitmapDrawable(getResources(), bitmapResized);
+        toggle.setHomeAsUpIndicator(drawable);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawer.isDrawerVisible(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
