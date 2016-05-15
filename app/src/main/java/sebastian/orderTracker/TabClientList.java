@@ -93,6 +93,9 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
         clientAdapter = createAdapter(getContext(), new ArrayList<Client>(), day);
         final Global global = (Global)getActivity().getApplicationContext();
         CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(getFormattedUrl(day), global.getUserPass(), this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
+        /////////////// BORRAR ESTO CUANDO ESTE LA FUNCIONALIDAD PARA CONSULTAR PEDIDOS
+        global.tempUrl = getFormattedUrl(2);
+        ///////////////
         NetworkManagerSingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         EditText edt = (EditText)v.findViewById(R.id.tab_client_list_client_search);
         edt.addTextChangedListener(new TextWatcher() {
@@ -309,16 +312,17 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
     private String addWaypoints(String url) {
         ArrayList<LatLng> locations = getAllLocations();
         url = url + "&waypoints=optimize:true";
-        if(locations.size() > 2) {
-            for (int i = 1; i < locations.size() - 2; ++i) {
-                url += "|" + locations.get(i).latitude + "," + locations.get(i).longitude;
+        if (locations.size() > 0) {
+            if (locations.size() > 2) {
+                for (int i = 1; i < locations.size() - 2; ++i) {
+                    url += "|" + locations.get(i).latitude + "," + locations.get(i).longitude;
+                }
+            } else {
+                url += "|" + locations.get(0).latitude + "," + locations.get(0).longitude + "|" +
+                        locations.get(locations.size() - 1).latitude + "," + locations.get(locations.size() - 1).longitude;
             }
-        } else {
-            url += "|" + locations.get(0).latitude + "," + locations.get(0).longitude + "|" +
-                    locations.get(locations.size()-1).latitude + "," + locations.get(locations.size()-1).longitude;
+            return url;
         }
         return url;
     }
-
-
 }

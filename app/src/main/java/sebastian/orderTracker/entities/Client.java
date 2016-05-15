@@ -105,4 +105,16 @@ public class Client{
     }
 
 
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof Client)
+        {
+            sameSame = this.id == ((Client) object).id;
+        }
+
+        return sameSame;
+    }
 }

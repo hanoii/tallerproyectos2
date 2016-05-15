@@ -15,6 +15,10 @@
             android:icon="@android:drawable/ic_dialog_dialer"
             android:title="Catálogo" />
         <item
+            android:id="@+id/nav_resumen"
+            android:icon="@android:drawable/ic_dialog_dialer"
+            android:title="Resúmen diario"/>
+        <item
             android:id="@+id/nav_configuracion"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuración" />

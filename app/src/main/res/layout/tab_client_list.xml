@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
@@ -15,9 +16,19 @@
             android:id="@+id/tab_client_list_client_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".8">
+            android:layout_weight=".6">
             <requestFocus />
         </EditText>
+        <!--<ImageButton
+            android:id="@+id/calendar_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:background="@null"
+            android:src="@drawable/common_plus_signin_btn_icon_light_normal"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2sp" />-->
         <ImageButton
             android:id="@+id/map_button"
             android:layout_width="0dp"
@@ -30,6 +41,12 @@
             android:padding="2sp" />
     </LinearLayout>
 
+    <!--<DatePicker
+        android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
+        android:layout_height="@dimen/clients_route_height"
+        android:layout_below="@id/client_tab_toolbar"
+        android:id="@+id/calendar" />-->
 
     <FrameLayout
         android:layout_width="match_parent"

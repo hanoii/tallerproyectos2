@@ -157,6 +157,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_maps">Map</string>
+    <string name="totals">Totales</string>
     <string name="title_activity_prueba">Prueba</string>
     <string name="action_scan">com.google.zxing.client.android.SCAN</string>
+    <string name="summary_visited_clients_text">Clientes visitados:</string>
+    <string name="summary_offroute_visited_clients_text">Clientes visitados fuera de ruta:</string>
 </resources>

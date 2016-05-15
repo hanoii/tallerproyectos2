@@ -1,33 +1,40 @@
 package sebastian.orderTracker.activities;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import sebastian.orderTracker.Global;
+import sebastian.orderTracker.QuickstartPreferences;
+import sebastian.orderTracker.RegistrationIntentService;
 import sebastian.orderTracker.adapters.PagerAdapter;
 import sebastian.orderTracker.R;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private boolean isReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +85,24 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+            }
+        };
+
+        // Registering BroadcastReceiver
+        registerReceiver();
+
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
     }
 
 
@@ -100,14 +125,6 @@ public class MainActivity extends AppCompatActivity
     private ListView mDrawerList;
 
 
-    private void addDrawerItems() {
-        ArrayAdapter<String> mAdapter;
-        String[] osArray = { getString(R.string.fuera_de_ruta), getString(R.string.agenda),
-                getString(R.string.catalogo), getString(R.string.configuracion) };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Hacer algo con cada botón del menú
@@ -118,7 +135,35 @@ public class MainActivity extends AppCompatActivity
                 getBaseContext().getApplicationContext().startActivity(intent);
                 return true;
             }
+            case R.id.nav_resumen: {
+                Intent intent = new Intent(getBaseContext().getApplicationContext(), Summary.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getBaseContext().getApplicationContext().startActivity(intent);
+                return true;
+            }
         }
         return false;
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        isReceiverRegistered = false;
+        super.onPause();
+    }
+
+    private void registerReceiver(){
+        if(!isReceiverRegistered) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+            isReceiverRegistered = true;
+        }
     }
 }

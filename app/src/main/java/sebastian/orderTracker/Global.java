@@ -2,6 +2,7 @@ package sebastian.orderTracker;
 
 import android.app.Application;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,4 +38,14 @@ public class Global extends Application {
     }
 
     private String password;
+
+    public String tempUrl;
+
+    public String getDate() {
+        Calendar currentTime = Calendar.getInstance();
+        String date = (currentTime.get(Calendar.DAY_OF_MONTH) + "/" + currentTime.get(Calendar.MONTH)
+                + "/" + currentTime.get(Calendar.YEAR));
+        return date;
+    }
+
 }
