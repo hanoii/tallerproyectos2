@@ -6,12 +6,28 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.google.android.gms.maps.CameraUpdateFactory;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import sebastian.orderTracker.adapters.ClientRowAdapter;
+import sebastian.orderTracker.entities.Client;
 
 /**
  * Created by Senastian on 15/05/2016.
@@ -73,7 +89,32 @@ public class RegistrationIntentService extends IntentService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-       // CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/", global.getUserPass(), this.createRequestSuccessListener(clientAdapter), this.createRequestErrorListener());
+        Global global = (Global)getApplicationContext();
+        Map<String, String> params = global.getUserPass();
+        params.put("type", "android");
+        params.put("token", token);
+        JSONObject payload = new JSONObject();
+        try {
+            payload.put("type", "android");
+            payload.put("token", token);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        CustomJsonObjectRequest jsObjRequest = new CustomJsonObjectRequest
+                (Request.Method.POST,"http://dev-taller2.pantheonsite.io/api/push_notifications.json", params,payload, this.createRequestSuccessListener(), this.createRequestErrorListener());
+        NetworkManagerSingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+    }
+
+
+    private Response.ErrorListener createRequestErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+
+            ;
+        };
     }
 
     /**
@@ -90,5 +131,15 @@ public class RegistrationIntentService extends IntentService {
         }*/
     }
     // [END subscribe_topics]
+
+    private Response.Listener<JSONObject> createRequestSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                           int jj = 5;
+                }
+        };
+    }
+
 
 }
