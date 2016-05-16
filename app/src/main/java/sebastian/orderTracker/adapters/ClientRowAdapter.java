@@ -101,7 +101,7 @@ public class ClientRowAdapter extends RecyclerView.Adapter<ClientItemHolder> imp
         //holder.mailAdress.setText(clients.get(position).getCorreo());
         //holder.staticPhoneNumber.setText(clients.get(position).getTelefono());
         //holder.mobilePhoneNumber.setText(clients.get(position).getMobilePhoneNumber());
-        holder.address.setText(filteredClients.get(position).getDireccion());
+        holder.address.setText(filteredClients.get(position).getDireccion().substring(0,filteredClients.get(position).getDireccion().lastIndexOf(",")));
         holder.company.setText(filteredClients.get(position).getCompania());
 
         ImageLoader mImageLoader = NetworkManagerSingleton.getInstance(context).getImageLoader();

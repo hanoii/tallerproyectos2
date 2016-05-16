@@ -18,7 +18,7 @@ import sebastian.orderTracker.activities.MainActivity;
  * Created by Senastian on 15/05/2016.
  */
 public class GCMListener extends GcmListenerService{
-    private static final String TAG = "Order Tracker";
+    private static final String TAG = "MyGcmListenerService";
 
     /**
      * Called when message is received.
@@ -71,7 +71,7 @@ public class GCMListener extends GcmListenerService{
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
+                .setContentTitle("OrderTracker - Seguimiento de Pedidos")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

@@ -62,12 +62,14 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
     RecyclerView rv;
     GoogleMap map;
     private SupportMapFragment mapFragment;
+    List<LatLng> coordinates;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         v = createView(savedInstanceState);
+        coordinates = new ArrayList<LatLng>();
         FragmentManager fm = getChildFragmentManager();
         mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
         if (mapFragment == null) {
@@ -172,7 +174,7 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
                     JSONObject routeSteps = steps.getJSONObject(0);
                     JSONObject poly = route.getJSONObject("overview_polyline");
                     String Polyline = poly.getString("points");
-                    List<LatLng> coordinates = PolyUtil.decode(Polyline);
+                    coordinates.addAll(PolyUtil.decode(Polyline));
                     updateMap(coordinates);
                     drawMarkers();
                 }catch(JSONException e) {
@@ -276,7 +278,7 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
 
     public ArrayList<LatLng> getAllLocations() {
         ArrayList<LatLng> locations = new ArrayList<LatLng>();
-        for(int i = 0; i < clientAdapter.size()-1; ++i) {
+        for(int i = 0; i < clientAdapter.size(); ++i) {
             locations.add(clientAdapter.getByPosition(i).getDireccionAsLatLng());
         }
         return locations;
@@ -311,10 +313,10 @@ public class TabClientList extends Fragment implements OnMapReadyCallback {
 
     private String addWaypoints(String url) {
         ArrayList<LatLng> locations = getAllLocations();
-        url = url + "&waypoints=optimize:true";
+        url = url + "&waypoints=";
         if (locations.size() > 0) {
             if (locations.size() > 2) {
-                for (int i = 1; i < locations.size() - 2; ++i) {
+                for (int i = 0; i < locations.size(); ++i) {
                     url += "|" + locations.get(i).latitude + "," + locations.get(i).longitude;
                 }
             } else {
