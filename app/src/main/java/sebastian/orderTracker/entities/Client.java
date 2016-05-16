@@ -18,6 +18,16 @@ public class Client{
     private String direccion;
     private boolean visited;
 
+    public boolean isAsigned() {
+        return isAsigned;
+    }
+
+    public void setAsigned(boolean asigned) {
+        isAsigned = asigned;
+    }
+
+    private boolean isAsigned;
+
     public String getId() {
         return id;
     }
@@ -84,6 +94,7 @@ public class Client{
             this.lng = ((JSONObject) jsonClient.get("direccion")).getDouble("lng");
             this.id = (String)jsonClient.get("id");
             visited = false;
+            isAsigned = false;
         } catch(JSONException e) {
             e.printStackTrace();
             this.correo = "malber@gmail.com";

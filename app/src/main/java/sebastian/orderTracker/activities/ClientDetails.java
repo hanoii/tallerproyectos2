@@ -139,6 +139,7 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
                 } catch (ActivityNotFoundException anfe)
                 {
                     showDialog(ClientDetails.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+                    onActivityResult(0,RESULT_OK, new Intent());
                 }
             }
         });
@@ -183,17 +184,17 @@ public class ClientDetails extends AppCompatActivity implements OnMapReadyCallba
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 //get the extras that are returned from the intent
-                String result = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+              //  String result = intent.getStringExtra("SCAN_RESULT");
+              //  String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
-                if (c.getId().compareTo(result) == 0)
-                {
+               // if (c.getId().compareTo(result) == 0)
+              //  {
                     Intent newIntent = new Intent(ClientDetails.this, NewOrderActivity.class);
                     Gson gs = new Gson();
                     String clientString = gs.toJson(c);
                     newIntent.putExtra(getString(R.string.serializedClientKey), clientString);
                     startActivity(newIntent);
-                }
+              //  }
 
                 /*CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + result, ((Global)getApplicationContext()).getUserPass(), this.createRequestSuccessListener(), this.createRequestErrorListener());
                 NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);

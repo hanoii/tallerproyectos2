@@ -18,7 +18,7 @@ import sebastian.orderTracker.activities.MainActivity;
  * Created by Senastian on 15/05/2016.
  */
 public class GCMListener extends GcmListenerService{
-    private static final String TAG = "MyGcmListenerService";
+    private static final String TAG = "Order Tracker";
 
     /**
      * Called when message is received.

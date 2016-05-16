@@ -423,6 +423,14 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         };
     }
 
+    private int totalItems() {
+        int total = 0;
+        for(NewOrderNavigationArrayData item : chosenProductsList) {
+            total+= item.getQuantity();
+        }
+        return total;
+    }
+
     private double calculatePrice() {
         Double plainPrice = 0.0;
         Double adjustedPrice = 0.0;
@@ -469,7 +477,7 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         Gson gson = new Gson();
         Calendar currentTime = Calendar.getInstance();
         Integer day = currentTime.get(Calendar.DAY_OF_MONTH);
-        Integer month = currentTime.get(Calendar.MONTH);
+        Integer month = currentTime.get(Calendar.MONTH) + 1;
         String daystr = day.toString();
         String monthstr = month.toString();
         if(day < 10) {
@@ -480,14 +488,16 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         }
         String date = "" + daystr + "/" +
                 monthstr + "/" + currentTime.get(Calendar.YEAR);
-        OrderToSubmit order = new OrderToSubmit(calculatePrice(), date, nodeIds, c.getId());
+        OrderToSubmit order = new OrderToSubmit(calculatePrice(), date, nodeIds, c.getId(), totalItems());
         String jsonString = gson.toJson(order);
         JSONObject json = null;
         try {
             json = new JSONObject(jsonString);
+            json.put("cantidad", "1");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         final Global global = (Global)getApplicationContext();
         String url = "http://dev-taller2.pantheonsite.io/api/node.json";
         CustomJsonObjectRequest jsObjRequest = new CustomJsonObjectRequest(Request.Method.POST, url, global.getUserPass(), json, this.createOrderSubmitSuccessListener(), this.createRequestErrorListener());

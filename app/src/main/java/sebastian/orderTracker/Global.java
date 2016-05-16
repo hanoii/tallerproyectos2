@@ -43,7 +43,7 @@ public class Global extends Application {
 
     public String getDate() {
         Calendar currentTime = Calendar.getInstance();
-        String date = (currentTime.get(Calendar.DAY_OF_MONTH) + "/" + currentTime.get(Calendar.MONTH)
+        String date = (currentTime.get(Calendar.DAY_OF_MONTH) + "/" + (currentTime.get(Calendar.MONTH) +1)
                 + "/" + currentTime.get(Calendar.YEAR));
         return date;
     }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -31,13 +32,11 @@ public class SummaryELAdapter extends BaseExpandableListAdapter
     private Summary context;
     private List<String> listDataHeader;
     private HashMap<String, List<Client>> listDataChild;
-    private HashMap<String, Boolean> isMine;
 
     public SummaryELAdapter(Summary context) {
         this.context = context;
         this.listDataHeader = new ArrayList<String>();
         this.listDataChild = new HashMap<String, List<Client>>();
-        this.isMine = new HashMap<String, Boolean>();
         listDataHeader.add(context.getResources().getString(R.string.summary_visited_clients_text));
         listDataHeader.add(context.getResources().getString(R.string.summary_offroute_visited_clients_text));
         listDataChild.put(listDataHeader.get(0), new ArrayList<Client>());
@@ -76,6 +75,10 @@ public class SummaryELAdapter extends BaseExpandableListAdapter
         enterprise.setText(child.getCompania());
         address.setText(child.getDireccion());
         img.setImageUrl(child.getImagen(), imageLoader);
+        if(child.isAsigned()){
+            ImageView icon = (ImageView)convertView.findViewById(R.id.semaphore);
+            icon.setImageResource(R.drawable.green_light_small);
+        }
 
         return convertView;
     }
@@ -113,10 +116,9 @@ public class SummaryELAdapter extends BaseExpandableListAdapter
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.summary_row, null);
         }
-
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.summary_item);
+        lblListHeader.setText(headerTitle + listDataChild.get(headerTitle).size());
         lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
 
         return convertView;
     }
@@ -138,16 +140,19 @@ public class SummaryELAdapter extends BaseExpandableListAdapter
         this.listDataChild = dataChild;
     }
 
+    public List<Client> getAllChildsFromCategory(String category) {
+        return listDataChild.get(category);
+    }
+
     public void addChild(String category, Client c, boolean mine) {
         List<Client> clientList = listDataChild.get(category);
-        if(clientList == null) {
-            List<Client> tempCl = new ArrayList<Client>();
-            tempCl.add(c);
-            listDataChild.put(category, tempCl);
+        if(clientList.size() == 0) {
+            clientList.add(c);
+            listDataChild.put(category, clientList);
         } else {
             boolean found = false;
             for (Client currectClient : clientList) {
-                if (currectClient.getId() == c.getId())
+                if (currectClient.getId().equals(c.getId()))
                     found = true;
             }
             if (!found) {
@@ -155,6 +160,8 @@ public class SummaryELAdapter extends BaseExpandableListAdapter
                 listDataChild.put(category, clientList);
             }
         }
-        isMine.put(c.getId(), mine);
+        if(mine) {
+            c.setAsigned(true);
+        }
     }
 }

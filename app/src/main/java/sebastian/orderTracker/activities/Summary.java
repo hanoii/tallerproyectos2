@@ -15,12 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.google.android.gms.common.api.BooleanResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.gson.Gson;
 
@@ -50,6 +52,7 @@ public class Summary extends AppCompatActivity {
     private Context context;
     private SummaryELAdapter sAdapter;
     float totalSold;
+    int totalPackagesSold;
 
     List<Client> allClients;
     View v;
@@ -69,11 +72,14 @@ public class Summary extends AppCompatActivity {
         this.sAdapter = new SummaryELAdapter(this);
         final Global global = (Global)getApplicationContext();
         this.eLV.setAdapter(sAdapter);
+        allClients = new ArrayList<>();
         clients = new HashMap<String, List<Client>>();
-        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest("http://dev-taller2.pantheonsite.io/api/clientes.json",
-                global.getUserPass(), this.createAllClientsRequestSuccessListener(), this.createRequestErrorListener());
+        String url = "http://dev-taller2.pantheonsite.io/api/clientes.json" + "?" + "fecha" + "[value][date]=" + global.getDate();
+        CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(url,
+                global.getUserPass(), this.createAllClientsRequestSuccessListener(), this.createAllClientsRequestErrorListener());
         NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
         requestOrders();
+
     }
 
     private Response.Listener<JSONArray> createAllClientsRequestSuccessListener() {
@@ -106,8 +112,8 @@ public class Summary extends AppCompatActivity {
     private String generateRequestUrl() {
         Global global = (Global)getApplicationContext();
         // TODO descomentar y borrar
-        //String url =  "http://dev-taller2.pantheonsite.io/api/pedidos.json?fecha[value][date]=" + global.getDate();
-        String url =  "http://dev-taller2.pantheonsite.io/api/pedidos.json?fecha[value][date]=" + "02/04/2016";
+        String url =  "http://dev-taller2.pantheonsite.io/api/pedidos.json?fecha[value][date]=" + global.getDate();
+        //String url =  "http://dev-taller2.pantheonsite.io/api/pedidos.json?fecha[value][date]=" + "02/04/2016";
         return url;
     }
 
@@ -115,40 +121,60 @@ public class Summary extends AppCompatActivity {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                List<Pair<String, String>> clientIds = new ArrayList<>();
+                List<Boolean> isAsigned = new ArrayList<>();
+                List<String> clientIds = new ArrayList<>();
                 for(int i=0; i< response.length();++i) {
                     try {
                         JSONObject jObj = (JSONObject)response.get(i);
                         if (jObj != null)
                         {
-                            clientIds.add(new Pair<String, String>(getId(jObj.getString("Cliente")), jObj.getString("Fecha")));
+                            clientIds.add(getId(jObj.getString("Cliente")));
+                            String precio = jObj.getString("Precio");
+                            precio = precio.replace("$", "");
+                            if(jObj.get("Vendedor").equals(((Global)getApplicationContext()).getUsername())) {
+                                isAsigned.add(true);
+                            } else {
+                                isAsigned.add(false);
+                            }
+                            totalSold += Double.valueOf(precio);
+                            try {
+                                totalPackagesSold += Double.valueOf(jObj.getString("cantidad"));
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                requestClients(clientIds);
+                TextView total = (TextView)findViewById(R.id.total_money);
+                TextView totalPackages = (TextView)findViewById(R.id.total_packages);
+                total.setText("Monto total vendido: " + "$" + totalSold);
+                totalPackages.setText("Cantidad de Bultos vendidos:" + totalPackagesSold);
+                requestClients(clientIds, isAsigned);
             }
         };
     }
 
-    private void requestClients(List<Pair<String, String>> clientNodeIds) {
-        for(Pair<String, String> nId: clientNodeIds) {
-            String url = "http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + nId.first;
+
+    private void requestClients(List<String> clientNodeIds, List<Boolean> clientIsAsigned) {
+        for(int i=0; i < clientNodeIds.size(); ++i) {
+            String nId = clientNodeIds.get(i);
+            String url = "http://dev-taller2.pantheonsite.io/api/clientes.json?args[0]=" + nId;
             Global global = (Global)getApplicationContext();
-            String category;
-            if(nId.second.compareTo(global.getDate()) == 0) {
-                category = getString(R.string.summary_visited_clients_text);
-            } else {
-                category = getString(R.string.summary_offroute_visited_clients_text);
+            String category = getString(R.string.summary_offroute_visited_clients_text);
+            for(Client c : allClients) {
+                if(nId.equals(c.getId()))
+                    category = getString(R.string.summary_visited_clients_text);
             }
             CustomJsonArrayRequest jsObjRequest = new CustomJsonArrayRequest(url, global.getUserPass(),
-                    this.createClientRequestSuccessListener(category), this.createRequestErrorListener());
+                    this.createClientRequestSuccessListener(category, clientIsAsigned.get(i)), this.createRequestErrorListener());
             NetworkManagerSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
         }
+
     }
 
-    private Response.Listener<JSONArray> createClientRequestSuccessListener(final String category) {
+    private Response.Listener<JSONArray> createClientRequestSuccessListener(final String category, final boolean isMine) {
         return new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -158,13 +184,13 @@ public class Summary extends AppCompatActivity {
                         if (jObj != null)
                         {
                             Client c = new Client(jObj);
-                            sAdapter.addChild(category, c, allClients.contains(c));
+                            sAdapter.addChild(category, c, isMine);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
+            sAdapter.notifyDataSetChanged();
             }
         };
     }
@@ -176,6 +202,15 @@ public class Summary extends AppCompatActivity {
     }
 
     private Response.ErrorListener createRequestErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            };
+        };
+    }
+
+    private Response.ErrorListener createAllClientsRequestErrorListener() {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

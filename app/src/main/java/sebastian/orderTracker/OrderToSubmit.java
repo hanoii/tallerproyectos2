@@ -15,14 +15,16 @@ public class OrderToSubmit {
     private FieldFecha field_fecha;
     private FieldItems field_items;
     private FieldCliente field_cliente;
+    private FieldCantidadPedido field_cantidad_pedido;
 
-    public OrderToSubmit(double price, String fecha, List<Integer> nodeIds, String clientId) {
+    public OrderToSubmit(double price, String fecha, List<Integer> nodeIds, String clientId, int cant) {
         type = "pedido";
         field_precio = new FieldPrecio(price);
         field_estado = new FieldEstado("Solicitado");
         field_fecha = new FieldFecha(fecha);
         field_items = new FieldItems(nodeIds);
         field_cliente = new FieldCliente(clientId);
+        field_cantidad_pedido = new FieldCantidadPedido(cant);
     }
 
     private class Precio {
@@ -32,6 +34,11 @@ public class OrderToSubmit {
         public Double value;
     }
 
+    private class CantidadPedido {
+        public CantidadPedido(int c) { value = c;}
+        public int value;
+    }
+
     private class FieldPrecio {
         public FieldPrecio(double p) {
             und = new ArrayList<>();
@@ -39,6 +46,15 @@ public class OrderToSubmit {
             und.add(precio);
         }
         public List<Precio> und;
+    }
+
+    private class FieldCantidadPedido {
+        public FieldCantidadPedido(int c) {
+            und = new ArrayList<>();
+            CantidadPedido cant = new CantidadPedido(c);
+            und.add(cant);
+        }
+        public List<CantidadPedido> und;
     }
 
     private class FieldEstado {
