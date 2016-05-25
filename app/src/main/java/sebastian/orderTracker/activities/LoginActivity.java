@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        //populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -218,12 +217,13 @@ public class LoginActivity extends AppCompatActivity {
                 String resp = future.get(10, TimeUnit.SECONDS);
             } catch (Exception e) {
                 // TODO Debe manejar todos los errores correspondientemente
-                if (e.getCause() instanceof VolleyError) {
+                return false;
+                /*if (e.getCause() instanceof VolleyError) {
                     VolleyError error = (VolleyError)e.getCause();
                     if(error.networkResponse.statusCode >= 400)
                         return false;
                 }
-                e.printStackTrace();
+                e.printStackTrace();*/
             }
             global.setUsername(mEmail);
             global.setPassword(mPassword);

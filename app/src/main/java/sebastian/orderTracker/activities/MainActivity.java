@@ -141,6 +141,12 @@ public class MainActivity extends AppCompatActivity
                 getBaseContext().getApplicationContext().startActivity(intent);
                 return true;
             }
+            case R.id.nav_order_history: {
+                Intent intent = new Intent(getBaseContext().getApplicationContext(), OrderHistory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getBaseContext().getApplicationContext().startActivity(intent);
+                return true;
+            }
         }
         return false;
     }

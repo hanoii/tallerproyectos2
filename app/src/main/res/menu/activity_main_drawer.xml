@@ -19,6 +19,10 @@
             android:icon="@android:drawable/ic_dialog_dialer"
             android:title="Resúmen diario"/>
         <item
+            android:id="@+id/nav_order_history"
+            android:icon="@android:drawable/ic_dialog_dialer"
+            android:title="Historial de Pedidos"/>
+        <item
             android:id="@+id/nav_configuracion"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configuración" />
