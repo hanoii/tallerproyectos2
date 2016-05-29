@@ -45,6 +45,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryItemHo
         }
     }
 
+    public void clearData() {
+        orders = new ArrayList<>();
+    }
+
     public void addOrder(String n, String c, String t, String st, String d) {
         orders.add(new OrderInformationContainer(n, c, t, st, d));
     }
