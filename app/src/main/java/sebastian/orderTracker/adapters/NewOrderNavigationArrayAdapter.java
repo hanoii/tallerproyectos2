@@ -56,7 +56,7 @@ public class NewOrderNavigationArrayAdapter extends ArrayAdapter
         ImageLoader imageLoader = NetworkManagerSingleton.getInstance(this.getContext()).getImageLoader();
 
         price.setText("$" + data.getProduct().getPrecio());
-        name.setText(data.getProduct().getName());
+        name.setText(data.getProduct().getName() + " " + data.getProduct().getMarca());
         code.setText(data.getProduct().getId());
         img.setImageUrl(data.getProduct().getImagen(), imageLoader);
         quantity.setText(data.getQuantity().toString());

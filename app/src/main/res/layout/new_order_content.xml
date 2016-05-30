@@ -11,11 +11,31 @@
     tools:context=".activities.NewOrderActivity"
     tools:showIn="@layout/new_order_activity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/new_order_search_toolbar">
+        <EditText
+            android:id="@+id/new_order_search"
+            android:inputType="textFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6">
+        <requestFocus />
+        </EditText>
+        <Spinner
+            android:layout_width="0dp"
+            android:id="@+id/new_order_spinner"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"></Spinner>
+    </LinearLayout>
+
     <ExpandableListView
+        android:layout_below="@id/new_order_search_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/new_order_list"
-        android:layout_alignParentTop="true"
         tools:listitem="@layout/new_order_row" />
 
 </RelativeLayout>

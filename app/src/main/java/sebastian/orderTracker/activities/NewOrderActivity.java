@@ -17,11 +17,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -34,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -151,6 +159,30 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
         this.eLV = (ExpandableListView) findViewById(R.id.new_order_list);
         this.nOELA = new NewOrderELAdapter(this);
 
+
+        EditText edt = (EditText)findViewById(R.id.new_order_search);
+        edt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                nOELA.getFilter().filter(s.toString());
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        Spinner spinner = (Spinner) findViewById(R.id.new_order_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.order_filter_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new filterSpinnerListener());
+
         final Global global = (Global)getApplicationContext();
         SimpleDateFormat sDF = new SimpleDateFormat("dd/MM/yyyy");
         String date = sDF.format(Calendar.getInstance().getTime());
@@ -188,6 +220,19 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
 
         nONAA = new NewOrderNavigationArrayAdapter(context, R.id.new_order_price, this.chosenProductsList);
         list.setAdapter(nONAA);
+    }
+
+    private class filterSpinnerListener implements AdapterView.OnItemSelectedListener {
+        public filterSpinnerListener() {
+            super();
+        }
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+           nOELA.switchFilter(position);
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
     }
 
     private Response.Listener<JSONArray> createRequestDiscountSuccessListener()
@@ -271,6 +316,14 @@ public class NewOrderActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
+                if(error.networkResponse.data!=null) {
+                    try {
+                        String body = new String(error.networkResponse.data,"UTF-8");
+                        Log.v("ERROR VOLLEY", body);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         };
     }

@@ -128,7 +128,7 @@ public class Summary extends AppCompatActivity {
                         JSONObject jObj = (JSONObject)response.get(i);
                         if (jObj != null)
                         {
-                            clientIds.add(getId(jObj.getString("Cliente")));
+                            clientIds.add(jObj.getString("cliente_nid"));
                             String precio = jObj.getString("Precio");
                             precio = precio.replace("$", "");
                             if(jObj.get("Vendedor").equals(((Global)getApplicationContext()).getUsername())) {
@@ -194,12 +194,11 @@ public class Summary extends AppCompatActivity {
             }
         };
     }
-
+/*
     private String getId(String nId) {
-        String[] sub = nId.split("/");
-        String[] sub2 = sub[2].split("\"");
-        return sub2[0];
-    }
+        String[] sub = nId.split("-");
+        return sub[1];
+    }*/
 
     private Response.ErrorListener createRequestErrorListener() {
         return new Response.ErrorListener() {

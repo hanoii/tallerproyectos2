@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import sebastian.orderTracker.entities.Client;
+
 /**
  * Created by Senastian on 02/05/2016.
  */
@@ -23,7 +25,7 @@ public class OrderToSubmit {
         field_estado = new FieldEstado("Solicitado");
         field_fecha = new FieldFecha(fecha);
         field_items = new FieldItems(nodeIds);
-        field_cliente = new FieldCliente(clientId);
+        field_cliente = new FieldCliente(Integer.valueOf(clientId));
         field_cantidad_pedido = new FieldCantidadPedido(cant);
     }
 
@@ -109,16 +111,18 @@ public class OrderToSubmit {
     }
 
     private class FieldCliente {
-        public FieldCliente(String id) {
-            und = new Cliente(id);
+        public FieldCliente(int clientId) {
+            und = new ArrayList<>();
+            Cliente c = new Cliente(clientId);
+            und.add(c);
         }
-        public Cliente und;
+        List<Cliente> und;
     }
 
     private class Cliente {
-        public Cliente(String u) {
-            und = u;
+        public Cliente(Integer u) {
+            target_id = " (" + u.toString() + ")";
         }
-        public String und;
+        String target_id;
     }
 }

@@ -19,6 +19,12 @@ public class Product implements Serializable {
     private String categoria;
     private String stock;
 
+    public String getMarca() {
+        return marca;
+    }
+
+    private String marca;
+
 
     public void setDrawableBitmap(Bitmap drawableBitmap) {
         this.drawableBitmap = drawableBitmap;
@@ -37,14 +43,15 @@ public class Product implements Serializable {
             return value + " " + summary + " " + format;
         }
     }
-
+/*
     public Product(String name, String marca, int codigo, String imgSrc, double precio, int imgId, String stock) {
         this.titulo = name + " " + marca;
         this.id = ""+codigo;
         this.imagen = imgSrc;
         this.precio = ""+precio;
         this.stock = "" + stock;
-    }
+        this.marca = marca;
+    }*/
 
     public boolean equals(Product p) {
         return id.equals(p.getId());
