@@ -62,12 +62,15 @@ public class OrderHistory extends AppCompatActivity {
         Switch switchMode = (Switch)findViewById(R.id.order_history_day_month_switch);
         switchMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                TextView sw = (TextView)findViewById(R.id.order_history_spinner_title);
                 if(isChecked) {
                     useMonthly = true;
                     daySpinner.setEnabled(false);
+                    sw.setText("Por Mes");
                 } else {
                     useMonthly = false;
                     daySpinner.setEnabled(true);
+                    sw.setText("Por Día");
                 }
             }
         });

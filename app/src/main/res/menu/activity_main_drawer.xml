@@ -4,23 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_fuera_ruta"
-            android:icon="@android:drawable/ic_dialog_map"
+            android:icon="@drawable/ic_assignment_late_white_24dp"
             android:title="Fuera de Ruta" />
         <item
             android:id="@+id/nav_agenda"
-            android:icon="@android:drawable/ic_dialog_info"
+            android:icon="@drawable/ic_receipt_white_24dp"
             android:title="Agenda" />
         <item
             android:id="@+id/nav_catalogo"
-            android:icon="@android:drawable/ic_dialog_dialer"
+            android:icon="@drawable/ic_shopping_cart_white_24dp"
             android:title="Catálogo" />
         <item
             android:id="@+id/nav_resumen"
-            android:icon="@android:drawable/ic_dialog_dialer"
+            android:icon="@drawable/ic_assignment_turned_in_white_24dp"
             android:title="Resúmen diario"/>
         <item
             android:id="@+id/nav_order_history"
-            android:icon="@android:drawable/ic_dialog_dialer"
+            android:icon="@drawable/ic_assignment_white_24dp"
             android:title="Historial de Pedidos"/>
         <item
             android:id="@+id/nav_configuracion"
